@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EZ TODD Intake Mockup | Texas Deed Questionnaire</title>
+    <style>
+      *{box-sizing:border-box}body{margin:0;background:#000;color:#fff;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}header,footer{background:#000}header{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.1)}footer{border-top:1px solid rgba(255,255,255,.1);padding:40px 0}.wrap{max-width:1120px;margin:0 auto;padding:0 24px}.topbar,.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 0}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;background:#fff;color:#000;font-weight:900}.wordmark{line-height:1.1}.wordmark strong{display:block}.wordmark span,nav,p,.disclaimer{color:rgba(255,255,255,.58)}nav{display:flex;flex-wrap:wrap;gap:22px;font-size:14px;font-weight:700}.button{display:inline-flex;justify-content:center;border-radius:8px;padding:12px 18px;border:1px solid rgba(255,255,255,.16);font-size:14px;font-weight:800}.primary{background:#fff;color:#000;border-color:#fff}.dark{background:#000;color:#fff;border-color:#000}section{padding:48px 0}h1{max-width:850px;margin:16px 0 0;font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:0}h2{font-size:26px;margin:0}h3{margin:0}.eyebrow{color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.22em;font-size:13px;font-weight:800}.lead{max-width:760px;font-size:18px;line-height:1.7}.progress{display:flex;gap:8px;overflow-x:auto;margin-top:28px}.progress span{white-space:nowrap;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.035);padding:9px 12px;color:rgba(255,255,255,.58);font-size:12px;font-weight:800}.progress span:first-child{background:#fff;color:#000}.help,.step,.review-required{border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.035);padding:20px}.help{margin-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.form{display:grid;gap:22px}.fields{display:grid;gap:18px;margin-top:20px}label span{display:block;font-size:14px;font-weight:800}input,select,textarea{width:100%;margin-top:8px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:#000;color:#fff;padding:13px;font:inherit}.drop,.summary div,.recommendation,.tags{border:1px solid rgba(255,255,255,.1);border-radius:8px;background:#000;padding:16px}.summary{display:grid;gap:12px}.tags span{display:inline-flex;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:6px 10px;margin:5px 5px 0 0;color:rgba(255,255,255,.65);font-size:12px;font-weight:800}.recommendation h3{margin-top:10px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.review-required{display:none}.review-required ul{color:rgba(255,255,255,.65);line-height:1.8}.disclaimer{max-width:780px;font-size:13px;line-height:1.65}.disclaimer a{color:#fff;text-decoration:underline;text-underline-offset:4px}@media(min-width:760px){.fields,.summary{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.topbar,.footer-grid,.help{align-items:flex-start;flex-direction:column}.button{width:100%}.actions{flex-direction:column}}
+    </style>
+  </head>
+  <body>
+    <header><div class="wrap topbar"><a class="brand" href="preview.html"><span class="mark">EZ</span><span class="wordmark"><strong>EZ TODD</strong><span>by EZ Law</span></span></a><nav><a href="how-it-works.html">How It Works</a><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a><a href="tel:">Call/Text</a></nav><a class="button primary" href="start.html">Start Now</a></div></header>
+    <main>
+      <section><div class="wrap"><p class="eyebrow">Intake mockup</p><h1>Texas Deed Questionnaire</h1><p class="lead">This is a polished client-facing mockup. It does not submit data, connect to a database, collect payment, or create a signed engagement.</p><div class="progress"><span>1. Getting Started</span><span>2. About You</span><span>3. Property</span><span>4. Beneficiaries</span><span>5. Review</span><span>6. Next Steps</span></div><div class="help"><p>Need help? Call or text <a href="tel:" style="color:#fff;text-decoration:underline">[firm phone]</a>.</p><p><span>Save and resume coming soon</span> &nbsp; <a href="intake.html">Start Over</a></p></div></div></section>
+      <section><div class="wrap">
+        <div id="reviewRequired" class="review-required"><p class="eyebrow">Attorney review required</p><h2>This situation needs attorney review before checkout.</h2><p>Based on your answers, your situation may need a closer look before EZ Law can offer the flat-fee deed path. You can request a call and the attorney will review the issue before payment.</p><ul id="redFlags"></ul><div class="actions"><a class="button primary" href="tel:">Request Attorney Call</a><a class="button" href="tel:">Call or Text EZ Law</a></div><p>No payment or checkout is available from this mockup state.</p></div>
+        <div id="intakeForm" class="form">
+          <div class="step"><p class="eyebrow">Step 1</p><h2>Getting Started</h2><div class="fields">
+            <label><span>Is the property located in Texas? *</span><select data-key="texasProperty"><option value="">Select one</option><option>Yes</option><option>No</option></select></label>
+            <label><span>What is your main reason for doing this? *</span><select data-key="mainReason"><option value="">Select one</option><option>Avoid probate and pass my home to my family</option><option>Plan for Medicaid or long-term care</option><option>Keep control now and decide later</option><option>Not sure</option></select></label>
+            <label><span>Might you need someone to sign for you under a power of attorney, now or later?</span><select data-key="poaConcern"><option value="">Select one</option><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+            <label><span>Do you want your deed to include a warranty of title?</span><select data-key="warranty"><option value="">Select one</option><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+          </div></div>
+          <div class="step"><p class="eyebrow">Step 2</p><h2>About You</h2><div class="fields">
+            <label><span>Full legal name *</span><input placeholder="Jane A. Owner"></label>
+            <label><span>Has your name changed since your current deed was recorded?</span><select data-key="nameChanged"><option value="">Select one</option><option>Yes</option><option>No</option></select></label>
+            <label><span>Mailing address *</span><input placeholder="Street, city, state, ZIP"></label>
+            <label><span>Phone number *</span><input placeholder="[firm phone format]"></label>
+            <label><span>Email address *</span><input placeholder="you@example.com"></label>
+            <label><span>Are you the current owner shown on the deed or county records?</span><select data-key="ownerOfRecord"><option value="">Select one</option><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+            <label><span>Marital status</span><select data-key="maritalStatus"><option value="">Select one</option><option>Married</option><option>Divorced</option><option>Widowed</option><option>Separated</option><option>Single</option></select></label>
+            <label><span>Will your spouse sign the deed if needed?</span><select data-key="spouseWillSign"><option value="">Select one</option><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+            <label><span>Does a divorce decree or court order involve this property?</span><select data-key="divorceOrder"><option value="">Select one</option><option>Yes</option><option>No</option></select></label>
+            <label><span>Will you sign the deed yourself, or will someone sign for you under a power of attorney?</span><select data-key="signingAuthority"><option value="">Select one</option><option>Myself</option><option>Someone under a power of attorney</option></select></label>
+          </div></div>
+          <div class="step"><p class="eyebrow">Step 3</p><h2>Property</h2><div class="fields">
+            <label><span>County where the property is located *</span><input placeholder="County, Texas"></label>
+            <label><span>Property street address *</span><input placeholder="Property address"></label>
+            <label><span>Property type</span><select data-key="propertyType"><option value="">Select one</option><option>Single-family home</option><option>Condominium</option><option>Townhome</option><option>Vacant land</option><option>Rural or agricultural land</option><option>Rental property</option><option>Commercial</option><option>Mineral interest</option><option>Other</option></select></label>
+            <label><span>Is this your homestead?</span><select data-key="homestead"><option value="">Select one</option><option>Yes</option><option>No</option></select></label>
+            <label><span>Do you have your property's legal description?</span><select data-key="legalDescription"><option value="">Select one</option><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+            <label><span>Upload current deed placeholder</span><div class="drop">Upload current deed placeholder. No file will be submitted in this mockup.</div></label>
+          </div></div>
+          <div class="step"><p class="eyebrow">Step 4</p><h2>Beneficiaries</h2><div class="fields"><label><span>Primary beneficiary name *</span><input placeholder="Full legal name or organization"></label><label><span>Relationship to you</span><input placeholder="Child, spouse, trust, charity, etc."></label><label><span>Beneficiary mailing address</span><input placeholder="Street, city, state, ZIP"></label><label><span>Add another beneficiary placeholder</span><input placeholder="Additional beneficiary"></label><label><span>Add alternate beneficiary placeholder</span><input placeholder="Backup beneficiary"></label></div></div>
+          <div class="step"><p class="eyebrow">Step 5</p><h2>Review</h2><div class="summary"><div><strong>Property</strong><p id="summaryProperty">Texas real property in [county]</p></div><div><strong>Goal</strong><p id="summaryGoal">Avoid probate / attorney review needed</p></div><div><strong>Owner</strong><p>[Client full legal name]</p></div><div><strong>Beneficiary</strong><p>[Primary beneficiary]</p></div></div><div id="tagBox" class="tags" style="display:none"><p class="eyebrow">Mock internal review tags</p><div id="tags"></div></div><div class="recommendation"><p class="eyebrow">Preliminary guidance only</p><h3 id="recommendation">Transfer on Death Deed</h3><p>Based on your answers, this may be the better fit. The attorney confirms the correct deed during your confirmation call.</p><p id="reviewNote" style="display:none">Your matter includes details the attorney will confirm during the call.</p></div></div>
+          <div class="step"><p class="eyebrow">Step 6</p><h2>Next Steps</h2><p>After the questionnaire, the client reviews the engagement agreement, pays the flat fee, confirms details with the attorney, receives the deed for review, signs and notarizes it, and EZ Law records it.</p><div class="actions"><a id="summaryContinue" class="button primary" href="intake-summary.html">Continue to Summary</a><a class="button" href="start.html">Back to Start</a></div></div>
+        </div>
+      </div></section>
+    </main>
+    <footer><div class="wrap footer-grid"><div><a class="brand" href="preview.html"><span class="mark">EZ</span><span class="wordmark"><strong>EZ TODD</strong><span>by EZ Law</span></span></a><p class="disclaimer">Zafrani Law PLLC, doing business as EZ Law. Principal office: Lubbock, Texas. Responsible attorney: Edmund Zafrani. Phone [firm phone]. Email [firm email]. This website is attorney advertising and provides general information only. It is not legal advice, and using this site, reading our answers, or contacting us does not create an attorney-client relationship. An attorney-client relationship begins only when you sign our engagement agreement and we accept your matter. We prepare deeds for Texas real property only. A Transfer on Death Deed or Lady Bird deed is not a will or a complete estate plan. Results depend on your specific facts, and we do not guarantee any particular legal or tax outcome. <a href="legal-and-disclaimers.html">See our full Disclaimers and Legal Notices.</a></p></div><nav><a href="how-it-works.html">How It Works</a><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a><a href="tel:">Call/Text</a></nav></div></footer>
+    <script>
+      const state = {};
+      const selects = document.querySelectorAll("[data-key]");
+      const byId = (id) => document.getElementById(id);
+      function update() {
+        selects.forEach((select) => { state[select.dataset.key] = select.value; });
+        const flags = [];
+        if (state.texasProperty === "No") flags.push("Property is not located in Texas");
+        if (state.mainReason === "Plan for Medicaid or long-term care") flags.push("Medicaid or long-term care planning selected");
+        if (state.ownerOfRecord === "No" || state.ownerOfRecord === "Not sure") flags.push("Owner of record needs review");
+        if (state.divorceOrder === "Yes") flags.push("Divorce decree or court order involves the property");
+        if (state.homestead === "Yes" && (state.spouseWillSign === "No" || state.spouseWillSign === "Not sure")) flags.push("Homestead spouse signature issue");
+        if (state.signingAuthority === "Someone under a power of attorney") flags.push("Someone will sign under a power of attorney");
+        const tags = [];
+        if (state.nameChanged === "Yes") tags.push("Attorney review: name change");
+        if (state.propertyType === "Rural or agricultural land") tags.push("Drafting review: rural property");
+        if (state.propertyType === "Commercial") tags.push("Drafting review: commercial property");
+        if (state.propertyType === "Mineral interest") tags.push("Drafting review: mineral interest");
+        if (state.legalDescription === "No" || state.legalDescription === "Not sure") tags.push("Add-on: legal description retrieval");
+        if (state.poaConcern === "Yes" || state.poaConcern === "Not sure") tags.push("Deed choice review: power of attorney concern");
+        const reviewRequired = flags.length > 0;
+        byId("reviewRequired").style.display = reviewRequired ? "block" : "none";
+        byId("intakeForm").style.display = reviewRequired ? "none" : "grid";
+        byId("redFlags").innerHTML = flags.map((flag) => `<li>${flag}</li>`).join("");
+        let recommendation = "Transfer on Death Deed";
+        if (reviewRequired) recommendation = "Attorney Review Needed";
+        else if (state.poaConcern === "Yes" || state.poaConcern === "Not sure" || state.warranty === "Yes" || state.mainReason === "Keep control now and decide later") recommendation = "Lady Bird Deed";
+        const deedParam = recommendation === "Lady Bird Deed" ? "lady-bird" : "todd";
+        const legalParam = state.legalDescription === "No" || state.legalDescription === "Not sure" ? "yes" : "no";
+        byId("summaryContinue").href = `intake-summary.html?deed=${deedParam}&legalDescription=${legalParam}`;
+        byId("recommendation").textContent = recommendation;
+        byId("summaryProperty").textContent = state.texasProperty ? `${state.texasProperty} / ${state.propertyType || "property type not selected"}` : "Texas real property in [county]";
+        byId("summaryGoal").textContent = state.mainReason || "Avoid probate / attorney review needed";
+        byId("tagBox").style.display = tags.length ? "block" : "none";
+        byId("reviewNote").style.display = tags.length ? "block" : "none";
+        byId("tags").innerHTML = tags.map((tag) => `<span>${tag}</span>`).join("");
+      }
+      selects.forEach((select) => select.addEventListener("change", update));
+      update();
+    </script>
+  </body>
+</html>

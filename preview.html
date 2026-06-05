@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EZ TODD by EZ Law | Attorney-Prepared Texas Deeds</title>
+    <meta
+      name="description"
+      content="EZ TODD by EZ Law offers flat-fee Texas Transfer on Death Deeds and Lady Bird Deeds prepared and reviewed by a licensed Texas attorney."
+    />
+    <style>
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      a { color: inherit; text-decoration: none; }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: rgba(0,0,0,.86);
+        backdrop-filter: blur(14px);
+      }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 0; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #000; font-weight: 900; }
+      .wordmark { line-height: 1.1; }
+      .wordmark strong { display: block; font-size: 16px; }
+      .wordmark span { color: rgba(255,255,255,.55); font-size: 12px; }
+      nav { display: flex; gap: 24px; align-items: center; color: rgba(255,255,255,.66); font-size: 14px; font-weight: 600; }
+      nav a:hover { color: #fff; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 800;
+        border: 1px solid rgba(255,255,255,.16);
+      }
+      .button.primary { background: #fff; color: #000; border-color: #fff; }
+      .button.dark { background: #000; color: #fff; border-color: #000; }
+      .mobile-nav { display: none; }
+      section { padding: 56px 0; }
+      .hero { padding: 72px 0 80px; text-align: center; }
+      .hero-logo { display: grid; place-items: center; width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 8px; background: #fff; color: #000; font-size: 24px; font-weight: 900; }
+      .product { font-size: clamp(48px, 9vw, 72px); line-height: 1; font-weight: 650; letter-spacing: 0; margin: 0; }
+      .tagline { margin: 10px 0 34px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .24em; font-size: 13px; font-weight: 700; }
+      .pill { display: inline-flex; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 8px 14px; color: rgba(255,255,255,.75); font-size: 14px; font-weight: 700; }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 { max-width: 880px; margin: 18px auto 0; font-size: clamp(40px, 7vw, 72px); line-height: 1.02; letter-spacing: 0; font-weight: 650; }
+      h2 { font-size: clamp(30px, 5vw, 44px); line-height: 1.1; letter-spacing: 0; margin-bottom: 0; }
+      h3 { font-size: 20px; margin-bottom: 0; }
+      p { color: rgba(255,255,255,.58); line-height: 1.7; }
+      .lead { max-width: 700px; margin: 24px auto 0; font-size: 18px; }
+      .choices { display: flex; flex-direction: column; gap: 12px; justify-content: center; margin-top: 36px; }
+      .start { margin-top: 20px; padding: 16px 32px; text-transform: uppercase; letter-spacing: .18em; font-weight: 900; }
+      .contact-line { margin-top: 20px; font-size: 14px; color: rgba(255,255,255,.45); }
+      .contact-line a { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+      .trust {
+        border-top: 1px solid rgba(255,255,255,.1);
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        padding: 20px 0;
+      }
+      .trust-grid { display: grid; gap: 12px; text-align: center; font-size: 14px; font-weight: 800; color: rgba(255,255,255,.78); }
+      .trust-grid div, .card, .price-card { border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: rgba(255,255,255,.035); }
+      .trust-grid div { padding: 14px; }
+      .fine { max-width: 860px; margin: 12px auto 0; text-align: center; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,.42); }
+      .section-head { max-width: 720px; margin: 0 auto 32px; text-align: center; }
+      .section-head p { margin-top: 16px; }
+      .cards { display: grid; gap: 16px; }
+      .card { display: block; padding: 24px; transition: border-color .15s ease, background .15s ease; }
+      .card:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.07); }
+      .card p { margin: 14px 0 0; font-size: 14px; }
+      .card span { display: inline-flex; margin-top: 22px; font-size: 14px; font-weight: 800; }
+      .band { border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.035); }
+      .split-head { display: flex; flex-direction: column; gap: 16px; justify-content: space-between; margin-bottom: 32px; }
+      .eyebrow { color: rgba(255,255,255,.42); text-transform: uppercase; letter-spacing: .22em; font-size: 13px; font-weight: 800; margin-bottom: 12px; }
+      .steps { display: grid; gap: 16px; list-style: none; margin: 0; padding: 0; }
+      .steps li { border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: rgba(255,255,255,.035); padding: 24px; }
+      .num { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; background: #fff; color: #000; font-weight: 900; }
+      .steps h3 { margin-top: 20px; }
+      .steps p { margin: 10px 0 0; font-size: 14px; }
+      .prices { display: grid; gap: 16px; }
+      .price-card { padding: 28px; }
+      .price-tag { color: rgba(255,255,255,.44); text-transform: uppercase; letter-spacing: .22em; font-size: 12px; font-weight: 800; }
+      .price { margin: 22px 0 8px; font-size: 56px; line-height: 1; color: #fff; font-weight: 650; }
+      ul { margin: 24px 0 0; padding: 0; list-style: none; color: rgba(255,255,255,.66); font-size: 14px; line-height: 1.8; }
+      .note { grid-column: 1 / -1; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: #000; padding: 16px; font-size: 14px; }
+      .light { background: #fff; color: #000; text-align: center; }
+      .light p { color: rgba(0,0,0,.62); max-width: 680px; margin: 16px auto 0; }
+      footer { border-top: 1px solid rgba(255,255,255,.1); background: #000; padding: 40px 0; }
+      .footer-grid { display: grid; gap: 32px; }
+      .disclaimer { max-width: 780px; font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.55); }
+      .disclaimer a { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+      .footer-nav { flex-wrap: wrap; justify-content: flex-start; }
+      @media (min-width: 700px) {
+        .choices { flex-direction: row; }
+        .trust-grid, .cards, .steps { grid-template-columns: repeat(3, 1fr); }
+        .prices { grid-template-columns: repeat(2, 1fr); }
+        .split-head, .footer-grid { flex-direction: row; display: flex; align-items: flex-end; }
+        .footer-grid { align-items: flex-start; justify-content: space-between; }
+        .footer-nav { justify-content: flex-end; }
+      }
+      @media (max-width: 900px) {
+        .desktop-nav, .desktop-cta { display: none; }
+        .mobile-nav { display: grid; gap: 12px; padding-bottom: 14px; }
+        .mobile-scroll { display: flex; gap: 18px; overflow-x: auto; color: rgba(255,255,255,.66); font-size: 14px; font-weight: 700; }
+      }
+      @media (max-width: 640px) {
+        .wrap { padding: 0 18px; }
+        section { padding: 48px 0; }
+        .hero { padding-top: 56px; }
+        .button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="topbar">
+          <a class="brand" href="preview.html" aria-label="EZ TODD by EZ Law home">
+            <span class="mark">EZ</span>
+            <span class="wordmark"><strong>EZ TODD</strong><span>by EZ Law</span></span>
+          </a>
+          <nav class="desktop-nav" aria-label="Main navigation">
+            <a href="how-it-works.html">How It Works</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="faq.html">FAQ</a>
+            <a href="tel:">Call/Text</a>
+          </nav>
+          <a class="button primary desktop-cta" href="start.html">Start Now</a>
+        </div>
+        <div class="mobile-nav">
+          <a class="button primary" href="start.html">Start Now</a>
+          <div class="mobile-scroll">
+            <a href="how-it-works.html">How It Works</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="faq.html">FAQ</a>
+            <a href="tel:">Call/Text</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-logo">EZ</div>
+          <p class="product">EZ TODD</p>
+          <p class="tagline">by EZ Law</p>
+          <p class="pill">Reviewed by a licensed Texas attorney</p>
+          <h1>Attorney-prepared Texas deeds. Statewide. Flat fee.</h1>
+          <p class="lead">The easy way to order a Texas Transfer on Death Deed or Lady Bird deed prepared and reviewed by a licensed Texas attorney.</p>
+          <div class="choices">
+            <a class="button" href="which-deed-do-i-need.html">Transfer on Death Deed</a>
+            <a class="button" href="which-deed-do-i-need.html">Lady Bird Deed</a>
+            <a class="button" href="which-deed-do-i-need.html">Not Sure? Help Me Choose</a>
+          </div>
+          <a id="start" class="button primary start" href="start.html">Start Now</a>
+          <p class="contact-line">Call or text for help: <a href="tel:">[firm phone]</a> &nbsp;|&nbsp; Email: <a href="mailto:">[firm email]</a></p>
+        </div>
+      </section>
+
+      <section class="trust">
+        <div class="wrap">
+          <div class="trust-grid">
+            <div>Reviewed by a licensed Texas attorney</div>
+            <div>[N] deeds completed</div>
+            <div>24-hour guarantee</div>
+          </div>
+          <p class="fine">24-hour commitment excludes weekends and holidays. Drafting begins after confirmation call and payment; recording submission begins after we receive the signed, notarized deed. County recording times vary.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Choose your deed path</h2>
+            <p>Pick the deed you already know you need, or start with the chooser if you want the attorney to recommend the right option.</p>
+          </div>
+          <div class="cards">
+            <a id="transfer-on-death-deed" class="card" href="start.html"><h3>Transfer on Death Deed</h3><p>A straightforward option for many Texas owners who want a home or land to pass outside probate.</p><span>Choose this option</span></a>
+            <a id="lady-bird-deed" class="card" href="start.html"><h3>Lady Bird Deed</h3><p>A flexible Texas deed option that may fit situations involving Medicaid, warranty, or signing needs.</p><span>Choose this option</span></a>
+            <a id="help-me-choose" class="card" href="which-deed-do-i-need.html"><h3>Not Sure? Help Me Choose</h3><p>Answer a few plain-language questions and a licensed Texas attorney will recommend the right deed.</p><span>Choose this option</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="band">
+        <div class="wrap">
+          <div class="split-head">
+            <div>
+              <p class="eyebrow">Three simple steps</p>
+              <h2>From questions to recorded deed</h2>
+            </div>
+            <p>Help is one call or text away while you complete the process.</p>
+          </div>
+          <ol class="steps">
+            <li><span class="num">1</span><h3>Answer a few questions</h3><p>Choose a deed path and provide the basic property, owner, and beneficiary information.</p></li>
+            <li><span class="num">2</span><h3>Confirm with the attorney</h3><p>A licensed Texas attorney reviews your information, confirms the details, and prepares the deed.</p></li>
+            <li><span class="num">3</span><h3>Notarize, and you are done</h3><p>You sign and notarize using our instructions, return the deed, and we submit it for recording.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">Flat-fee pricing</p>
+            <h2>Real prices. No price-match language.</h2>
+            <p>Government recording fees are included in the flat fee.</p>
+          </div>
+          <div class="prices">
+            <article class="price-card"><p class="price-tag">TODD</p><h3>Transfer on Death Deed</h3><p class="price">$500</p><p>Flat fee. Attorney reviewed. Recorded for you.</p><ul><li>- Attorney preparation</li><li>- Attorney review</li><li>- Confirmation call</li><li>- County recording</li><li>- Return of the recorded deed</li></ul></article>
+            <article class="price-card"><p class="price-tag">Lady Bird</p><h3>Lady Bird Deed</h3><p class="price">$600</p><p>Flat fee. Attorney reviewed. Recorded for you.</p><ul><li>- Attorney preparation</li><li>- Attorney review</li><li>- Confirmation call</li><li>- County recording</li><li>- Return of the recorded deed</li></ul></article>
+            <p class="note">Separate costs: $20 if we need to retrieve your legal description, and the notary fee paid directly to the notary. County recording fees are included.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="band">
+        <div class="wrap section-head">
+          <h2>Questions before you start?</h2>
+          <p>The full FAQ will live on its own focused page. For this first homepage version, the next step stays simple: choose a deed, start now, or call/text [firm phone] for help.</p>
+        </div>
+      </section>
+
+      <section class="light">
+        <div class="wrap">
+          <h2>Start your Texas deed today</h2>
+          <p>A simple TODD or Lady Bird deed is drafted and submitted for recording in 24 hours or less, guaranteed, excluding weekends and holidays.</p>
+          <div class="choices">
+            <a class="button dark" href="start.html">Start Now</a>
+            <a class="button" style="color:#000;border-color:rgba(0,0,0,.16)" href="tel:">Call/Text [firm phone]</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap footer-grid">
+        <div>
+          <a class="brand" href="preview.html"><span class="mark">EZ</span><span class="wordmark"><strong>EZ TODD</strong><span>by EZ Law</span></span></a>
+          <p class="disclaimer">Zafrani Law PLLC, doing business as EZ Law. Principal office: Lubbock, Texas. Responsible attorney: Edmund Zafrani. Phone [firm phone]. Email [firm email]. This website is attorney advertising and provides general information only. It is not legal advice, and using this site, reading our answers, or contacting us does not create an attorney-client relationship. An attorney-client relationship begins only when you sign our engagement agreement and we accept your matter. We prepare deeds for Texas real property only. A Transfer on Death Deed or Lady Bird deed is not a will or a complete estate plan. Results depend on your specific facts, and we do not guarantee any particular legal or tax outcome. <a href="legal-and-disclaimers.html">See our full Disclaimers and Legal Notices.</a></p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="how-it-works.html">How It Works</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="faq.html">FAQ</a>
+          <a href="tel:">Call/Text</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
