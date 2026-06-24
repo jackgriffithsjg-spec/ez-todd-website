@@ -1,3 +1,5 @@
+import { PortalSignOutButton } from "@/components/PortalSignOutButton";
+
 export function PortalTopbar() {
   return (
     <header className="border-b border-white/10 px-4 py-4 sm:px-6 lg:px-8">
@@ -7,7 +9,7 @@ export function PortalTopbar() {
             Internal prototype
           </p>
           <p className="mt-1 text-sm text-white/60">
-            Mock data only. No authentication, database, payment, e-signature, or Clio connection.
+            Supabase auth and submission storage foundation. Payment, e-signature, Clio, and document generation are not connected.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -17,9 +19,7 @@ export function PortalTopbar() {
           >
             Call (806) 777-6249
           </a>
-          <a href="/portal/login" className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-black">
-            Mock Sign Out
-          </a>
+          <PortalSignOutButton />
         </div>
       </div>
     </header>

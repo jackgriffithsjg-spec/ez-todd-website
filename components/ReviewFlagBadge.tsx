@@ -1,4 +1,4 @@
-import type { ReviewFlag } from "@/lib/mockSubmissions";
+import type { ReviewFlag } from "@/lib/submissionTypes";
 
 export function ReviewFlagBadge({ flag }: { flag: ReviewFlag }) {
   const urgent = flag.tier === 1;

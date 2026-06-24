@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { MatterOverviewCard } from "@/components/MatterOverviewCard";
 import { PortalShell } from "@/components/PortalShell";
 import { ReviewFlagBadge } from "@/components/ReviewFlagBadge";
 import { SubmissionDetailCard } from "@/components/SubmissionDetailCard";
 import { SubmissionReviewClient } from "@/components/SubmissionReviewClient";
-import { getSubmissionById } from "@/lib/mockSubmissions";
+import { fetchSubmissionById } from "@/lib/submissions";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Submission Details | EZ TODD Lawyer Portal",
@@ -18,6 +20,8 @@ export const metadata: Metadata = {
 type SubmissionDetailPageProps = {
   params: Promise<{ id: string }>;
 };
+
+export const dynamic = "force-dynamic";
 
 function DetailGrid({ items }: { items: { label: string; value?: string }[] }) {
   return (
@@ -34,7 +38,43 @@ function DetailGrid({ items }: { items: { label: string; value?: string }[] }) {
 
 export default async function SubmissionDetailPage({ params }: SubmissionDetailPageProps) {
   const { id } = await params;
-  const submission = getSubmissionById(id);
+  let submission = null;
+  let loadError = "";
+  const supabase = await createServerSupabaseClient().catch((error) => {
+    loadError = error instanceof Error ? error.message : "Supabase is not configured.";
+    return null;
+  });
+
+  if (!supabase) {
+    return (
+      <PortalShell>
+        <section className="rounded-md border border-red-300/30 bg-red-500/10 p-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-red-100/70">
+            Portal setup required
+          </p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-normal text-red-100">
+            Unable to load submission.
+          </h1>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-red-100/80">{loadError}</p>
+          <a href="/portal" className="mt-6 inline-flex rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-black">
+            Back to Dashboard
+          </a>
+        </section>
+      </PortalShell>
+    );
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/portal/login");
+
+  try {
+    submission = await fetchSubmissionById(supabase, id);
+  } catch (error) {
+    loadError = error instanceof Error ? error.message : "Unable to load submission.";
+  }
 
   if (!submission) {
     return (
@@ -45,7 +85,7 @@ export default async function SubmissionDetailPage({ params }: SubmissionDetailP
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-normal">No matching submission.</h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-white/55">
-            This prototype only includes a small set of mock submissions.
+            {loadError || "The requested submission was not found in Supabase."}
           </p>
           <a href="/portal" className="mt-6 inline-flex rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-black">
             Back to Dashboard

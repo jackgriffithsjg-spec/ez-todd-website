@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { type FormEvent, useMemo, useState } from "react";
 import { FieldGroup } from "@/components/FieldGroup";
 import { HelpBar } from "@/components/HelpBar";
 import { IntakeProgress } from "@/components/IntakeProgress";
@@ -87,6 +87,8 @@ function SelectField({
 
 export function IntakeMockup() {
   const [answers, setAnswers] = useState<IntakeState>(initialState);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const setAnswer = (key: keyof IntakeState, value: string) => {
     setAnswers((current) => ({ ...current, [key]: value }));
@@ -137,6 +139,92 @@ export function IntakeMockup() {
             : "no"
         }`;
 
+  const tier1SubmissionFlags = tier1Flags.map((flag) => ({
+    tier: "Tier 1",
+    label:
+      flag === "Medicaid or long-term care planning selected"
+        ? "Tier 1: Medicaid / long-term care planning"
+        : flag === "Owner of record needs review"
+          ? "Tier 1: Ownership not confirmed"
+          : flag === "Property is not located in Texas"
+            ? "Tier 1: Non-Texas property"
+            : flag === "Divorce decree or court order involves the property"
+              ? "Tier 1: Divorce decree or court order issue"
+              : flag === "Homestead spouse signature issue"
+                ? "Tier 1: Homestead spouse signature issue"
+                : "Tier 1: Power of attorney signing issue",
+    description: flag,
+  }));
+
+  const tier2SubmissionFlags = tier2Tags.map((tag) => ({
+    tier: "Tier 2",
+    label:
+      tag === "Attorney review: name change"
+        ? "Tier 2: Name change review"
+        : tag === "Drafting review: rural property"
+          ? "Tier 2: Rural/agricultural property"
+          : tag === "Drafting review: commercial property"
+            ? "Tier 2: Commercial property"
+            : tag === "Drafting review: mineral interest"
+              ? "Tier 2: Mineral interest"
+              : tag === "Add-on: legal description retrieval"
+                ? "Tier 2: Legal description retrieval"
+                : "Tier 2: Power of attorney concern",
+    description: tag,
+  }));
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    const formData = new FormData(event.currentTarget);
+    const legalDescriptionAddon =
+      answers.legalDescription === "No" || answers.legalDescription === "Not sure";
+
+    const response = await fetch("/api/intake-submissions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ownerLegalName: formData.get("ownerLegalName"),
+        ownerPriorName: answers.nameChanged === "Yes" ? "[owner_prior_name]" : null,
+        ownerMailingAddress: formData.get("ownerMailingAddress"),
+        ownerPhone: formData.get("ownerPhone"),
+        ownerEmail: formData.get("ownerEmail"),
+        ownerMaritalStatus: answers.maritalStatus,
+        spouseLegalName: answers.maritalStatus === "Married" ? "[spouse_legal_name]" : null,
+        propertyCounty: formData.get("propertyCounty"),
+        propertyAddress: formData.get("propertyAddress"),
+        propertyType: answers.propertyType,
+        isHomestead: answers.homestead,
+        legalDescriptionStatus: answers.legalDescription,
+        legalDescription: legalDescriptionAddon ? null : "[legal_description_from_client]",
+        recommendation,
+        recommendationReason:
+          recommendation === "Lady Bird Deed"
+            ? "Preliminary guidance selected Lady Bird Deed based on flexibility, warranty, or power-of-attorney answers."
+            : "Preliminary guidance selected Transfer on Death Deed based on probate-avoidance answers.",
+        legalDescriptionAddon,
+        flags: [...tier1SubmissionFlags, ...tier2SubmissionFlags],
+        primaryBeneficiaryName: formData.get("primaryBeneficiaryName"),
+        primaryBeneficiaryRelationship: formData.get("primaryBeneficiaryRelationship"),
+        primaryBeneficiaryAddress: formData.get("primaryBeneficiaryAddress"),
+        alternateBeneficiaryName: formData.get("alternateBeneficiaryName"),
+      }),
+    });
+
+    setIsSubmitting(false);
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      setSubmitError(data?.error || "Submission failed. Please try again or contact EZ Law.");
+      return;
+    }
+
+    const data = await response.json();
+    window.location.assign(`${summaryHref}${summaryHref.includes("?") ? "&" : "?"}submissionId=${data.id}`);
+  }
+
   return (
     <>
       <section className="px-4 py-12 sm:px-6 lg:px-8">
@@ -148,8 +236,9 @@ export function IntakeMockup() {
             Texas Deed Questionnaire
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-white/60">
-            This is a polished client-facing mockup. It does not submit data,
-            connect to a database, collect payment, or create a signed engagement.
+            This is a polished client-facing prototype. It can now save intake
+            submissions to Supabase, but it does not collect payment or create a
+            signed engagement.
           </p>
           <div className="mt-8 grid gap-4">
             <IntakeProgress steps={progressSteps} currentStep={showReviewRequired ? 4 : 0} />
@@ -163,7 +252,7 @@ export function IntakeMockup() {
           {showReviewRequired ? (
             <ReviewRequiredScreen reasons={tier1Flags} />
           ) : (
-            <form className="grid gap-6">
+            <form className="grid gap-6" onSubmit={handleSubmit}>
               <IntakeStepCard eyebrow="Step 1" title="Getting Started">
                 <div className="grid gap-5 md:grid-cols-2">
                   <SelectField label="Is the property located in Texas?" value={answers.texasProperty} onChange={(value) => setAnswer("texasProperty", value)} options={["Yes", "No"]} required />
@@ -175,11 +264,11 @@ export function IntakeMockup() {
 
               <IntakeStepCard eyebrow="Step 2" title="About You">
                 <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup label="Full legal name" placeholder="Jane A. Owner" required />
+                  <FieldGroup name="ownerLegalName" label="Full legal name" placeholder="Jane A. Owner" required />
                   <SelectField label="Has your name changed since your current deed was recorded?" value={answers.nameChanged} onChange={(value) => setAnswer("nameChanged", value)} options={["Yes", "No"]} required />
-                  <FieldGroup label="Mailing address" placeholder="Street, city, state, ZIP" required />
-                  <FieldGroup label="Phone number" type="tel" placeholder="[firm phone format]" required />
-                  <FieldGroup label="Email address" type="email" placeholder="you@example.com" required />
+                  <FieldGroup name="ownerMailingAddress" label="Mailing address" placeholder="Street, city, state, ZIP" required />
+                  <FieldGroup name="ownerPhone" label="Phone number" type="tel" placeholder="[firm phone format]" required />
+                  <FieldGroup name="ownerEmail" label="Email address" type="email" placeholder="you@example.com" required />
                   <SelectField label="Are you the current owner shown on the deed or county records?" value={answers.ownerOfRecord} onChange={(value) => setAnswer("ownerOfRecord", value)} options={["Yes", "No", "Not sure"]} required />
                   <SelectField label="Marital status" value={answers.maritalStatus} onChange={(value) => setAnswer("maritalStatus", value)} options={["Married", "Divorced", "Widowed", "Separated", "Single"]} required />
                   <SelectField label="Will your spouse sign the deed if needed?" value={answers.spouseWillSign} onChange={(value) => setAnswer("spouseWillSign", value)} options={["Yes", "No", "Not sure"]} />
@@ -190,8 +279,8 @@ export function IntakeMockup() {
 
               <IntakeStepCard eyebrow="Step 3" title="Property">
                 <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup label="County where the property is located" placeholder="County, Texas" required />
-                  <FieldGroup label="Property street address" placeholder="Property address" required />
+                  <FieldGroup name="propertyCounty" label="County where the property is located" placeholder="County, Texas" required />
+                  <FieldGroup name="propertyAddress" label="Property street address" placeholder="Property address" required />
                   <SelectField label="Property type" value={answers.propertyType} onChange={(value) => setAnswer("propertyType", value)} options={["Single-family home", "Condominium", "Townhome", "Vacant land", "Rural or agricultural land", "Rental property", "Commercial", "Mineral interest", "Other"]} required />
                   <SelectField label="Is this your homestead?" value={answers.homestead} onChange={(value) => setAnswer("homestead", value)} options={["Yes", "No"]} required />
                   <SelectField label="Do you have your property's legal description?" value={answers.legalDescription} onChange={(value) => setAnswer("legalDescription", value)} options={["Yes", "No", "Not sure"]} required />
@@ -201,11 +290,11 @@ export function IntakeMockup() {
 
               <IntakeStepCard eyebrow="Step 4" title="Beneficiaries">
                 <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup label="Primary beneficiary name" placeholder="Full legal name or organization" required />
-                  <FieldGroup label="Relationship to you" placeholder="Child, spouse, trust, charity, etc." />
-                  <FieldGroup label="Beneficiary mailing address" placeholder="Street, city, state, ZIP" />
+                  <FieldGroup name="primaryBeneficiaryName" label="Primary beneficiary name" placeholder="Full legal name or organization" required />
+                  <FieldGroup name="primaryBeneficiaryRelationship" label="Relationship to you" placeholder="Child, spouse, trust, charity, etc." />
+                  <FieldGroup name="primaryBeneficiaryAddress" label="Beneficiary mailing address" placeholder="Street, city, state, ZIP" />
                   <FieldGroup label="Add another beneficiary placeholder" placeholder="Additional beneficiary" />
-                  <FieldGroup label="Add alternate beneficiary placeholder" placeholder="Backup beneficiary" />
+                  <FieldGroup name="alternateBeneficiaryName" label="Add alternate beneficiary placeholder" placeholder="Backup beneficiary" />
                 </div>
               </IntakeStepCard>
 
@@ -230,13 +319,22 @@ export function IntakeMockup() {
                   deed for review, signs and notarizes it, and EZ Law records it.
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <a href={summaryHref} className="rounded-md bg-white px-6 py-3 text-center text-sm font-semibold text-black">
-                    Continue to Summary
-                  </a>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="rounded-md bg-white px-6 py-3 text-center text-sm font-semibold text-black disabled:cursor-not-allowed disabled:bg-white/50"
+                  >
+                    {isSubmitting ? "Saving..." : "Continue to Summary"}
+                  </button>
                   <a href="/start" className="rounded-md border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white">
                     Back to Start
                   </a>
                 </div>
+                {submitError ? (
+                  <p className="rounded-md border border-red-300/30 bg-red-500/10 p-3 text-sm leading-6 text-red-100">
+                    {submitError}
+                  </p>
+                ) : null}
               </IntakeStepCard>
             </form>
           )}

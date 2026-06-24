@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { MatterStatus, ReviewFlag, Submission } from "@/lib/mockSubmissions";
-import { matterStatuses } from "@/lib/mockSubmissions";
+import type { MatterStatus, ReviewFlag, Submission } from "@/lib/submissionTypes";
+import { matterStatuses } from "@/lib/submissionTypes";
 import { ReviewFlagBadge } from "@/components/ReviewFlagBadge";
 import { SubmissionStatusBadge } from "@/components/SubmissionStatusBadge";
 

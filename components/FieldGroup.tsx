@@ -5,6 +5,7 @@ type Option = {
 
 type FieldGroupProps = {
   label: string;
+  name?: string;
   type?: "text" | "email" | "tel" | "textarea" | "select" | "radio" | "file";
   placeholder?: string;
   options?: Option[];
@@ -13,6 +14,7 @@ type FieldGroupProps = {
 
 export function FieldGroup({
   label,
+  name,
   type = "text",
   placeholder,
   options = [],
@@ -28,9 +30,9 @@ export function FieldGroup({
         {required ? <span className="text-white/45"> *</span> : null}
       </span>
       {type === "textarea" ? (
-        <textarea className={`${baseClass} min-h-28`} placeholder={placeholder} />
+        <textarea name={name} className={`${baseClass} min-h-28`} placeholder={placeholder} />
       ) : type === "select" ? (
-        <select className={baseClass} defaultValue="">
+        <select name={name} className={baseClass} defaultValue="">
           <option value="" disabled>
             Select one
           </option>
@@ -44,7 +46,7 @@ export function FieldGroup({
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {options.map((option) => (
             <span key={option.label} className="rounded-md border border-white/10 bg-black p-3 text-sm text-white/70">
-              <input type="radio" name={label} className="mr-2 accent-white" />
+              <input type="radio" name={name ?? label} className="mr-2 accent-white" />
               {option.label}
             </span>
           ))}
@@ -54,7 +56,7 @@ export function FieldGroup({
           Upload current deed placeholder. No file will be submitted in this mockup.
         </div>
       ) : (
-        <input className={baseClass} type={type} placeholder={placeholder} />
+        <input name={name} className={baseClass} type={type} placeholder={placeholder} />
       )}
     </label>
   );

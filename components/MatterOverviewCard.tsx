@@ -1,4 +1,4 @@
-import type { Submission } from "@/lib/mockSubmissions";
+import type { Submission } from "@/lib/submissionTypes";
 import { SubmissionDetailCard } from "@/components/SubmissionDetailCard";
 import { SubmissionStatusBadge } from "@/components/SubmissionStatusBadge";
 

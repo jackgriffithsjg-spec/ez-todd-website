@@ -1,4 +1,4 @@
-import type { MatterStatus } from "@/lib/mockSubmissions";
+import type { MatterStatus } from "@/lib/submissionTypes";
 
 const urgentStatuses: MatterStatus[] = ["Needs Attorney Review", "Declined / Refunded"];
 const activeStatuses: MatterStatus[] = ["Drafting", "Sent for Client Review", "Submitted for Recording"];

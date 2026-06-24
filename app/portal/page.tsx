@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { PortalShell } from "@/components/PortalShell";
 import { SubmissionTable } from "@/components/SubmissionTable";
-import { mockSubmissions } from "@/lib/mockSubmissions";
+import type { Submission } from "@/lib/submissionTypes";
+import { fetchSubmissions } from "@/lib/submissions";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "EZ TODD Submissions | Lawyer Portal",
@@ -12,30 +15,68 @@ export const metadata: Metadata = {
   },
 };
 
-const summaryCards = [
-  {
-    label: "New Submissions",
-    value: mockSubmissions.filter((item) => item.status === "New Submission").length,
-  },
-  {
-    label: "Needs Attorney Review",
-    value: mockSubmissions.filter((item) => item.status === "Needs Attorney Review").length,
-  },
-  {
-    label: "Ready for Confirmation Call",
-    value: mockSubmissions.filter((item) => item.status === "Ready for Confirmation Call").length,
-  },
-  {
-    label: "Drafting",
-    value: mockSubmissions.filter((item) => item.status === "Drafting").length,
-  },
-  {
-    label: "Completed",
-    value: mockSubmissions.filter((item) => item.status === "Recorded / Complete").length,
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function PortalDashboardPage() {
+function getSummaryCards(submissions: Submission[]) {
+  return [
+    {
+      label: "New Submissions",
+      value: submissions.filter((item) => item.status === "New Submission").length,
+    },
+    {
+      label: "Needs Attorney Review",
+      value: submissions.filter((item) => item.status === "Needs Attorney Review").length,
+    },
+    {
+      label: "Ready for Confirmation Call",
+      value: submissions.filter((item) => item.status === "Ready for Confirmation Call").length,
+    },
+    {
+      label: "Drafting",
+      value: submissions.filter((item) => item.status === "Drafting").length,
+    },
+    {
+      label: "Completed",
+      value: submissions.filter((item) => item.status === "Recorded / Complete").length,
+    },
+  ];
+}
+
+export default async function PortalDashboardPage() {
+  let submissions: Submission[] = [];
+  let errorMessage = "";
+  const supabase = await createServerSupabaseClient().catch((error) => {
+    errorMessage = error instanceof Error ? error.message : "Supabase is not configured.";
+    return null;
+  });
+
+  if (!supabase) {
+    return (
+      <PortalShell>
+        <section className="rounded-md border border-red-300/30 bg-red-500/10 p-5 text-sm leading-6 text-red-100">
+          Unable to load portal submissions. {errorMessage}
+        </section>
+      </PortalShell>
+    );
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/portal/login");
+
+  try {
+    submissions = await fetchSubmissions(supabase);
+  } catch (error) {
+    errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Unable to load submissions from Supabase.";
+  }
+
+  const summaryCards = getSummaryCards(submissions);
+
   return (
     <PortalShell>
       <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
@@ -47,7 +88,7 @@ export default function PortalDashboardPage() {
             EZ TODD Submissions
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-6 text-white/55">
-            Scan mock intake submissions, spot Tier 1 red flags, and open matters for attorney review.
+            Scan real intake submissions, spot Tier 1 red flags, and open matters for attorney review.
           </p>
         </div>
         <a href="/portal/login" className="rounded-md border border-white/10 px-4 py-2 text-sm font-semibold text-white/70">
@@ -64,7 +105,13 @@ export default function PortalDashboardPage() {
         ))}
       </section>
 
-      <SubmissionTable submissions={mockSubmissions} />
+      {errorMessage ? (
+        <section className="rounded-md border border-red-300/30 bg-red-500/10 p-5 text-sm leading-6 text-red-100">
+          Unable to load portal submissions. {errorMessage}
+        </section>
+      ) : (
+        <SubmissionTable submissions={submissions} />
+      )}
     </PortalShell>
   );
 }
