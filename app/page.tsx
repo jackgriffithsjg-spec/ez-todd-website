@@ -43,8 +43,7 @@ export default function Home() {
                 Choose your deed path
               </h2>
               <p className="mt-4 text-base leading-7 text-white/55">
-                Pick the deed you already know you need, or start with the chooser if
-                you want the attorney to recommend the right option.
+                Start with the guidance page to determine which option is right for you
               </p>
             </div>
             <DeedChoiceCards />
@@ -78,10 +77,10 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto mb-8 max-w-2xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
-                Flat-fee pricing
+                Flat-fee pricing available
               </p>
               <h2 id="pricing-heading" className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
-                Real prices. No price-match language.
+                Real prices. Transparent Pricing for everyone
               </h2>
               <p className="mt-4 text-base leading-7 text-white/55">
                 Government recording fees are included in the flat fee.
@@ -103,7 +102,7 @@ export default function Home() {
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-white/55">
               The full FAQ will live on its own focused page. For this first homepage
               version, the next step stays simple: choose a deed, start now, or call/text
-              [firm phone] for help.
+              (806) 777-6249 for help.
             </p>
           </div>
         </section>
@@ -114,8 +113,8 @@ export default function Home() {
           body="A simple TODD or Lady Bird deed is drafted and submitted for recording in 24 hours or less, guaranteed, excluding weekends and holidays."
           primaryLabel="Start Now"
           primaryHref="/start"
-          secondaryLabel="Call/Text [firm phone]"
-          secondaryHref="tel:"
+          secondaryLabel="Call/Text (806) 777-6249"
+          secondaryHref="tel:+18067776249"
         />
       </main>
       <Footer />

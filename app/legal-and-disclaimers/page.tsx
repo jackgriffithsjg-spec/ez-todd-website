@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const notices = [
   {
     title: "About this website and who publishes it",
-    body: "This website is published by Zafrani Law PLLC, doing business as EZ Law, a Texas law practice with its principal office in Lubbock, Texas. The attorney responsible for this website is Edmund Zafrani, who is licensed to practice law in Texas. You can reach us at [firm phone] or [firm email]. This website is a communication about legal services and may be considered attorney advertising.",
+    body: "This website is published by Zafrani Law PLLC, doing business as EZ Law, a Texas law practice with its principal office in Lubbock, Texas. The attorney responsible for this website is Edmund Zafrani, who is licensed to practice law in Texas. You can reach us at (806) 777-6249 or Edzafrani@gmail.com. This website is a communication about legal services and may be considered attorney advertising.",
   },
   {
     title: "General information, not legal advice",
@@ -67,7 +67,7 @@ const notices = [
   },
   {
     title: "Contact",
-    body: "Questions about these notices may be directed to Zafrani Law PLLC, doing business as EZ Law, attention Edmund Zafrani, at [firm phone] or [firm email]. These deed-specific notices supplement EZ Law's general firm disclaimers. Insert your existing general disclaimer language alongside these on the site.",
+    body: "Questions about these notices may be directed to Zafrani Law PLLC, doing business as EZ Law, attention Edmund Zafrani, at (806) 777-6249 or Edzafrani@gmail.com. These deed-specific notices supplement EZ Law's general firm disclaimers. Insert your existing general disclaimer language alongside these on the site.",
   },
 ];
 

@@ -2,7 +2,7 @@ const navLinks = [
   { label: "How It Works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
   { label: "FAQ", href: "/faq" },
-  { label: "Call/Text", href: "tel:" },
+  { label: "Call/Text", detail: "(806) 777-6249", href: "tel:+18067776249" },
 ];
 
 export function Header() {
@@ -30,6 +30,7 @@ export function Header() {
               className="text-sm font-medium text-white/65 transition hover:text-white"
             >
               {link.label}
+              {"detail" in link ? <span className="ml-1 text-white/45">{link.detail}</span> : null}
             </a>
           ))}
           </nav>
@@ -53,6 +54,7 @@ export function Header() {
             {navLinks.map((link) => (
               <a key={link.label} href={link.href} className="shrink-0 text-sm font-medium text-white/65">
                 {link.label}
+                {"detail" in link ? <span className="ml-1 text-white/45">{link.detail}</span> : null}
               </a>
             ))}
           </nav>

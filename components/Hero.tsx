@@ -53,13 +53,13 @@ export function Hero() {
         </a>
         <p className="mt-5 text-sm text-white/45">
           Call or text for help:{" "}
-          <a href="tel:" className="text-white underline underline-offset-4">
-            [firm phone]
+          <a href="tel:+18067776249" className="text-white underline underline-offset-4">
+            (806) 777-6249
           </a>
           <span className="mx-2 text-white/25">|</span>
           Email:{" "}
-          <a href="mailto:" className="text-white underline underline-offset-4">
-            [firm email]
+          <a href="mailto:Edzafrani@gmail.com" className="text-white underline underline-offset-4">
+            Edzafrani@gmail.com
           </a>
         </p>
       </div>

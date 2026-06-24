@@ -2,7 +2,7 @@ const footerLinks = [
   { label: "How It Works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
   { label: "FAQ", href: "/faq" },
-  { label: "Call/Text", href: "tel:" },
+  { label: "Call/Text", href: "tel:+18067776249" },
 ];
 
 export function Footer() {
@@ -18,8 +18,8 @@ export function Footer() {
           </div>
           <p className="max-w-3xl text-sm leading-6 text-white/55">
             Zafrani Law PLLC, doing business as EZ Law. Principal office: Lubbock,
-            Texas. Responsible attorney: Edmund Zafrani. Phone [firm phone]. Email
-            [firm email]. This website is attorney advertising and provides general
+            Texas. Responsible attorney: Edmund Zafrani. Phone (806) 777-6249. Email
+            Edzafrani@gmail.com. This website is attorney advertising and provides general
             information only. It is not legal advice, and using this site, reading
             our answers, or contacting us does not create an attorney-client
             relationship. An attorney-client relationship begins only when you sign

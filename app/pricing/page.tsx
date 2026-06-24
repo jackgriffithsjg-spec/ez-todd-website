@@ -7,7 +7,7 @@ import { PricingPreview } from "@/components/PricingPreview";
 export const metadata: Metadata = {
   title: "EZ TODD Pricing | Flat-Fee Texas Deeds",
   description:
-    "Flat-fee pricing for attorney-prepared Texas Transfer on Death Deeds and Lady Bird Deeds by EZ TODD by EZ Law.",
+    "Flat-fee pricing available for attorney-prepared Texas Transfer on Death Deeds and Lady Bird Deeds by EZ TODD by EZ Law.",
 };
 
 export default function PricingPage() {

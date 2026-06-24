@@ -64,7 +64,7 @@ export default function FaqPage() {
 
         <CTASection
           title="Still not sure which deed fits?"
-          body="Start with the chooser, or call/text [firm phone] for help before you begin."
+          body="Start with the chooser, or call/text (806) 777-6249 for help before you begin."
           primaryLabel="Start Now"
           primaryHref="/start"
           secondaryLabel="View Pricing"

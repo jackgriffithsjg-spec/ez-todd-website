@@ -76,7 +76,7 @@ export default function StartPage() {
           primaryLabel="Begin Questionnaire"
           primaryHref="/intake"
           secondaryLabel="Call or Text for Help"
-          secondaryHref="tel:"
+          secondaryHref="tel:+18067776249"
         />
       </main>
       <Footer />

@@ -8,8 +8,8 @@ export function HelpBar({ showStartOver = false }: HelpBarProps) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p>
           Need help? Call or text{" "}
-          <a href="tel:" className="font-semibold text-white underline underline-offset-4">
-            [firm phone]
+          <a href="tel:+18067776249" className="font-semibold text-white underline underline-offset-4">
+            (806) 777-6249
           </a>
           .
         </p>

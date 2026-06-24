@@ -21,13 +21,13 @@ export function ReviewRequiredScreen({ reasons }: ReviewRequiredScreenProps) {
       <RedFlagAlert flags={reasons} />
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <a
-          href="tel:"
+          href="tel:+18067776249"
           className="rounded-md bg-white px-6 py-3 text-center text-sm font-semibold text-black"
         >
           Request Attorney Call
         </a>
         <a
-          href="tel:"
+          href="tel:+18067776249"
           className="rounded-md border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white"
         >
           Call or Text EZ Law
