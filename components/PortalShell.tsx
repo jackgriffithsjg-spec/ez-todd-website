@@ -9,11 +9,11 @@ type PortalShellProps = {
 export function PortalShell({ children }: PortalShellProps) {
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="mx-auto flex min-h-screen max-w-7xl">
+      <div className="flex min-h-screen w-full">
         <PortalSidebar />
         <div className="flex min-w-0 flex-1 flex-col">
           <PortalTopbar />
-          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>
+          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-6 xl:px-8">{children}</main>
         </div>
       </div>
     </div>

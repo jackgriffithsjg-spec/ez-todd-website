@@ -101,38 +101,38 @@ export function SubmissionTable({ submissions }: SubmissionTableProps) {
         </label>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-[1100px] text-left text-sm">
+      <div className="overflow-x-auto xl:overflow-visible">
+        <table className="w-full table-fixed text-left text-xs xl:text-sm">
           <thead className="border-b border-white/10 text-xs uppercase tracking-[0.16em] text-white/40">
             <tr>
-              <th className="px-4 py-3 font-semibold">Client</th>
-              <th className="px-4 py-3 font-semibold">Property</th>
-              <th className="px-4 py-3 font-semibold">Recommended deed</th>
-              <th className="px-4 py-3 font-semibold">Status</th>
-              <th className="px-4 py-3 font-semibold">Flags</th>
-              <th className="px-4 py-3 font-semibold">Price</th>
-              <th className="px-4 py-3 font-semibold">Submitted</th>
-              <th className="px-4 py-3 font-semibold">Action</th>
+              <th className="w-[17%] px-3 py-3 font-semibold">Client</th>
+              <th className="w-[18%] px-3 py-3 font-semibold">Property</th>
+              <th className="w-[12%] px-3 py-3 font-semibold">Deed</th>
+              <th className="w-[15%] px-3 py-3 font-semibold">Status</th>
+              <th className="w-[18%] px-3 py-3 font-semibold">Flags</th>
+              <th className="w-[7%] px-3 py-3 font-semibold">Price</th>
+              <th className="w-[7%] px-3 py-3 font-semibold">Submitted</th>
+              <th className="w-[6%] px-3 py-3 font-semibold">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10">
             {filteredSubmissions.map((submission) => (
               <tr key={submission.id} className="align-top">
-                <td className="px-4 py-4">
+                <td className="px-3 py-4">
                   <p className="font-semibold text-white">{submission.client.fullLegalName}</p>
                   <p className="mt-1 text-white/55">{submission.client.email}</p>
                   <p className="mt-1 text-white/55">{submission.client.phone}</p>
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-4">
                   <p className="font-semibold text-white">{submission.property.county} County</p>
-                  <p className="mt-1 max-w-xs text-white/55">{submission.property.streetAddress}</p>
+                  <p className="mt-1 text-white/55">{submission.property.streetAddress}</p>
                 </td>
-                <td className="px-4 py-4 text-white/75">{submission.recommendedDeed}</td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-4 text-white/75">{submission.recommendedDeed}</td>
+                <td className="px-3 py-4">
                   <SubmissionStatusBadge status={submission.status} />
                 </td>
-                <td className="px-4 py-4">
-                  <div className="flex max-w-xs flex-wrap gap-2">
+                <td className="px-3 py-4">
+                  <div className="flex flex-wrap gap-2">
                     {submission.flags.length > 0 ? (
                       submission.flags.map((item) => <ReviewFlagBadge key={item.label} flag={item} />)
                     ) : (
@@ -140,14 +140,14 @@ export function SubmissionTable({ submissions }: SubmissionTableProps) {
                     )}
                   </div>
                 </td>
-                <td className="px-4 py-4 font-semibold text-white">{submission.priceEstimate}</td>
-                <td className="px-4 py-4 text-white/60">{submission.submittedDate}</td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-4 font-semibold text-white">{submission.priceEstimate}</td>
+                <td className="px-3 py-4 text-white/60">{submission.submittedDate}</td>
+                <td className="px-3 py-4">
                   <a
                     href={`/portal/submissions/${submission.id}`}
-                    className="inline-flex rounded-md bg-white px-3 py-2 text-xs font-semibold text-black"
+                    className="inline-flex rounded-md bg-white px-2.5 py-2 text-xs font-semibold text-black"
                   >
-                    View Details
+                    View
                   </a>
                 </td>
               </tr>
