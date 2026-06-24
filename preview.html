@@ -91,6 +91,10 @@
       .steps p { margin: 10px 0 0; font-size: 14px; }
       .prices { display: grid; gap: 16px; }
       .price-card { padding: 28px; }
+      .price-card.price-tile { text-align: center; }
+      .price-card.shared-details { grid-column: 1 / -1; }
+      .shared-details h3 { font-size: 24px; }
+      .shared-details ul { display: grid; gap: 8px; }
       .price-tag { color: rgba(255,255,255,.44); text-transform: uppercase; letter-spacing: .22em; font-size: 12px; font-weight: 800; }
       .price { margin: 22px 0 8px; font-size: 56px; line-height: 1; color: #fff; font-weight: 650; }
       ul { margin: 24px 0 0; padding: 0; list-style: none; color: rgba(255,255,255,.66); font-size: 14px; line-height: 1.8; }
@@ -106,6 +110,7 @@
         .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .trust-grid, .cards, .steps { grid-template-columns: repeat(3, 1fr); }
         .prices { grid-template-columns: repeat(2, 1fr); }
+        .shared-details ul { grid-template-columns: repeat(2, 1fr); }
         .split-head, .footer-grid { flex-direction: row; display: flex; align-items: flex-end; }
         .footer-grid { align-items: flex-start; justify-content: space-between; }
         .footer-nav { justify-content: flex-end; }
@@ -220,8 +225,9 @@
             <p>Government recording fees are included in the flat fee.</p>
           </div>
           <div class="prices">
-            <article class="price-card"><p class="price-tag">TODD</p><h3>Transfer on Death Deed</h3><p class="price">$500</p><p>Flat fee. Attorney reviewed. Personalized drafting</p><ul><li>- Attorney preparation</li><li>- Attorney review</li><li>- Confirmation call</li><li>- County recording</li><li>- Return of the recorded deed</li></ul></article>
-            <article class="price-card"><p class="price-tag">Lady Bird</p><h3>Lady Bird Deed</h3><p class="price">$600</p><p>Flat fee. Attorney reviewed. Personalized drafting</p><ul><li>- Attorney preparation</li><li>- Attorney review</li><li>- Confirmation call</li><li>- County recording</li><li>- Return of the recorded deed</li></ul></article>
+            <article class="price-card price-tile"><p class="price-tag">TODD</p><p class="price">$500</p><h3>Transfer on Death Deed</h3></article>
+            <article class="price-card price-tile"><p class="price-tag">Lady Bird</p><p class="price">$600</p><h3>Lady Bird Deed</h3></article>
+            <article class="price-card shared-details"><h3>Flat fee. Attorney reviewed. Personalized drafting.</h3><ul><li>- Attorney preparation</li><li>- Attorney review</li><li>- Confirmation call</li><li>- One review opportunity before signing</li><li>- Signing and notarization instructions</li><li>- County recording</li><li>- Return of the recorded deed</li></ul></article>
             <p class="note">Separate costs: $20 if we need to retrieve your legal description, and the notary fee paid directly to the notary. County recording fees are included.</p>
           </div>
         </div>
