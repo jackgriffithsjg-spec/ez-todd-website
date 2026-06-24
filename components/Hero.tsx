@@ -23,22 +23,22 @@ export function Hero() {
           prepared and reviewed by a licensed Texas attorney.
         </p>
 
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+        <div className="mx-auto mt-9 grid w-full max-w-3xl justify-center gap-3 sm:grid-cols-3">
           <a
             href="/which-deed-do-i-need"
-            className="rounded-md border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+            className="flex min-h-12 items-center justify-center rounded-md border border-white/15 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white hover:text-black"
           >
             Transfer on Death Deed
           </a>
           <a
             href="/which-deed-do-i-need"
-            className="rounded-md border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+            className="flex min-h-12 items-center justify-center rounded-md border border-white/15 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white hover:text-black"
           >
             Lady Bird Deed
           </a>
           <a
             href="/which-deed-do-i-need"
-            className="rounded-md border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+            className="flex min-h-12 items-center justify-center rounded-md border border-white/15 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white hover:text-black"
           >
             Not Sure? Help Me Choose
           </a>

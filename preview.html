@@ -60,7 +60,8 @@
       h3 { font-size: 20px; margin-bottom: 0; }
       p { color: rgba(255,255,255,.58); line-height: 1.7; }
       .lead { max-width: 700px; margin: 24px auto 0; font-size: 18px; }
-      .choices { display: flex; flex-direction: column; gap: 12px; justify-content: center; margin-top: 36px; }
+      .choices { display: grid; grid-template-columns: 1fr; gap: 12px; justify-content: center; max-width: 760px; margin: 36px auto 0; }
+      .choices .button { min-height: 48px; text-align: center; }
       .start { margin-top: 20px; padding: 16px 32px; text-transform: uppercase; letter-spacing: .18em; font-weight: 900; }
       .contact-line { margin-top: 20px; font-size: 14px; color: rgba(255,255,255,.45); }
       .contact-line a { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
@@ -102,7 +103,7 @@
       .disclaimer a { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
       .footer-nav { flex-wrap: wrap; justify-content: flex-start; }
       @media (min-width: 700px) {
-        .choices { flex-direction: row; }
+        .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .trust-grid, .cards, .steps { grid-template-columns: repeat(3, 1fr); }
         .prices { grid-template-columns: repeat(2, 1fr); }
         .split-head, .footer-grid { flex-direction: row; display: flex; align-items: flex-end; }
