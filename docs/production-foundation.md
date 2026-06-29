@@ -22,9 +22,15 @@ Create these variables in local `.env.local` and in Vercel:
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+CLIO_GROW_API_TOKEN=
+CLIO_GROW_API_BASE_URL=
+CLIO_GROW_INBOX_LEADS_URL=
+NEXT_PUBLIC_SITE_URL=
 ```
 
 Only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are used by the current implementation. `SUPABASE_SERVICE_ROLE_KEY` is listed for future server-only admin workflows and must never be exposed to browser code.
+
+The Clio variables are server-side configuration for creating a Clio Grow Inbox Lead after a completed intake submission. Set `CLIO_GROW_INBOX_LEADS_URL` directly if the firm has a specific endpoint, or set `CLIO_GROW_API_BASE_URL` and the app will post to `/inbox_leads`. If Clio is not configured or the Clio request fails, the website still saves the intake submission and logs the sync issue for internal follow-up.
 
 ## Database Schema
 
@@ -81,6 +87,8 @@ The route stores:
 - Legal description add-on status.
 - Estimated price and matter status.
 
+After the database save succeeds, the route attempts to create a Clio Grow Inbox Lead containing the client contact details, property summary, preliminary recommendation, review flags, and local submission ID.
+
 The intake does not collect or store Social Security numbers, dates of birth, bank information, financial account numbers, or ID uploads.
 
 ## Portal Data Flow
@@ -117,7 +125,7 @@ Each status change writes a `status_history` entry.
 ## Known Limitations
 
 - No payment integration.
-- No Clio integration.
+- Clio sync is best-effort and depends on production Clio API credentials.
 - No e-signature.
 - No document generation.
 - No real file upload or file access control yet.

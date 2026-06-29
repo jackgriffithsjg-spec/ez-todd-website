@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createClioInboxLead } from "@/lib/clio";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type IntakeFlag = {
@@ -32,20 +33,28 @@ export async function POST(request: Request) {
     const price = getPrice(deedType, legalDescriptionAddon);
     const supabase = await createServerSupabaseClient();
     const submissionId = crypto.randomUUID();
+    const ownerLegalName = stringValue(body.ownerLegalName, "[owner_legal_name]");
+    const ownerPhone = stringValue(body.ownerPhone, "[owner_phone]");
+    const ownerEmail = stringValue(body.ownerEmail, "[owner_email]");
+    const propertyCounty = stringValue(body.propertyCounty, "[property_county]");
+    const propertyAddress = stringValue(body.propertyAddress, "[property_address]");
+    const status = flags.some((flag) => flag.tier === "Tier 1")
+      ? "Needs Attorney Review"
+      : "New Submission";
 
     const { error: submissionError } = await supabase
       .from("submissions")
       .insert({
         id: submissionId,
-        owner_legal_name: stringValue(body.ownerLegalName, "[owner_legal_name]"),
+        owner_legal_name: ownerLegalName,
         owner_prior_name: body.ownerPriorName || null,
         owner_mailing_address: stringValue(body.ownerMailingAddress, "[owner_mailing_address]"),
-        owner_phone: stringValue(body.ownerPhone, "[owner_phone]"),
-        owner_email: stringValue(body.ownerEmail, "[owner_email]"),
+        owner_phone: ownerPhone,
+        owner_email: ownerEmail,
         owner_marital_status: stringValue(body.ownerMaritalStatus, "Not provided"),
         spouse_legal_name: body.spouseLegalName || null,
-        property_county: stringValue(body.propertyCounty, "[property_county]"),
-        property_address: stringValue(body.propertyAddress, "[property_address]"),
+        property_county: propertyCounty,
+        property_address: propertyAddress,
         property_type: stringValue(body.propertyType, "Not provided"),
         is_homestead: booleanFromYesNo(body.isHomestead),
         legal_description_status: stringValue(body.legalDescriptionStatus, "Not provided"),
@@ -56,9 +65,7 @@ export async function POST(request: Request) {
         price_base: price.base,
         legal_description_addon: legalDescriptionAddon,
         price_total: price.total,
-        status: flags.some((flag) => flag.tier === "Tier 1")
-          ? "Needs Attorney Review"
-          : "New Submission",
+        status,
       });
 
     if (submissionError) throw submissionError;
@@ -106,6 +113,22 @@ export async function POST(request: Request) {
     const results = await Promise.all(relatedInserts);
     const relatedError = results.find((result) => result.error)?.error;
     if (relatedError) throw relatedError;
+
+    try {
+      await createClioInboxLead({
+        submissionId,
+        clientName: ownerLegalName,
+        clientPhone: ownerPhone,
+        clientEmail: ownerEmail,
+        propertyCounty,
+        propertyAddress,
+        recommendation: deedType,
+        status,
+        flags,
+      });
+    } catch (clioError) {
+      console.error("Clio Grow sync failed", clioError);
+    }
 
     return NextResponse.json({ id: submissionId });
   } catch (error) {

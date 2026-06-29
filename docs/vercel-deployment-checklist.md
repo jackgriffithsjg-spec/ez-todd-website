@@ -36,4 +36,4 @@
 
 - This project does not connect payment, e-signature, database, or backend submission.
 - Static `.html` files are local preview artifacts. The deployed Vercel site should use the Next.js routes.
-- Footer placeholders `(806) 777-6249`, `Edzafrani@gmail.com`, and `[N] deeds completed` should be replaced before launch.
+- Footer placeholders `(806) 777-6249` and `Edzafrani@gmail.com` should be confirmed before launch.

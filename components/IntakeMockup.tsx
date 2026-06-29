@@ -7,7 +7,6 @@ import { IntakeProgress } from "@/components/IntakeProgress";
 import { IntakeStepCard } from "@/components/IntakeStepCard";
 import { InternalMatterTags } from "@/components/InternalMatterTags";
 import { PreliminaryRecommendationCard } from "@/components/PreliminaryRecommendationCard";
-import { ReviewRequiredScreen } from "@/components/ReviewRequiredScreen";
 
 const progressSteps = [
   "Getting Started",
@@ -34,6 +33,12 @@ type IntakeState = {
   legalDescription: string;
 };
 
+type ReviewTrigger = {
+  key: string;
+  flag: string;
+  resetField: keyof IntakeState;
+};
+
 const initialState: IntakeState = {
   texasProperty: "",
   mainReason: "",
@@ -48,6 +53,16 @@ const initialState: IntakeState = {
   propertyType: "",
   homestead: "",
   legalDescription: "",
+};
+
+const reviewKeysByField: Partial<Record<keyof IntakeState, string[]>> = {
+  texasProperty: ["texasProperty:no"],
+  mainReason: ["mainReason:medicaid"],
+  ownerOfRecord: ["ownerOfRecord:review"],
+  divorceOrder: ["divorceOrder:yes"],
+  homestead: ["homesteadSpouse:review"],
+  spouseWillSign: ["homesteadSpouse:review"],
+  signingAuthority: ["signingAuthority:poa"],
 };
 
 function SelectField({
@@ -87,23 +102,81 @@ function SelectField({
 
 export function IntakeMockup() {
   const [answers, setAnswers] = useState<IntakeState>(initialState);
+  const [confirmedReviewAnswers, setConfirmedReviewAnswers] = useState<Record<string, boolean>>({});
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const setAnswer = (key: keyof IntakeState, value: string) => {
+    setSubmitError("");
+    const reviewKeys = reviewKeysByField[key] || [];
+    if (reviewKeys.length > 0) {
+      setConfirmedReviewAnswers((current) => {
+        const next = { ...current };
+        reviewKeys.forEach((reviewKey) => {
+          delete next[reviewKey];
+        });
+        return next;
+      });
+    }
     setAnswers((current) => ({ ...current, [key]: value }));
   };
 
-  const tier1Flags = useMemo(() => {
-    const flags: string[] = [];
-    if (answers.texasProperty === "No") flags.push("Property is not located in Texas");
-    if (answers.mainReason === "Plan for Medicaid or long-term care") flags.push("Medicaid or long-term care planning selected");
-    if (answers.ownerOfRecord === "No" || answers.ownerOfRecord === "Not sure") flags.push("Owner of record needs review");
-    if (answers.divorceOrder === "Yes") flags.push("Divorce decree or court order involves the property");
-    if (answers.homestead === "Yes" && (answers.spouseWillSign === "No" || answers.spouseWillSign === "Not sure")) flags.push("Homestead spouse signature issue");
-    if (answers.signingAuthority === "Someone under a power of attorney") flags.push("Someone will sign under a power of attorney");
-    return flags;
+  const tier1ReviewTriggers = useMemo(() => {
+    const triggers: ReviewTrigger[] = [];
+    if (answers.texasProperty === "No") {
+      triggers.push({
+        key: "texasProperty:no",
+        flag: "Property is not located in Texas",
+        resetField: "texasProperty",
+      });
+    }
+    if (answers.mainReason === "Plan for Medicaid or long-term care") {
+      triggers.push({
+        key: "mainReason:medicaid",
+        flag: "Medicaid or long-term care planning selected",
+        resetField: "mainReason",
+      });
+    }
+    if (answers.ownerOfRecord === "No" || answers.ownerOfRecord === "Not sure") {
+      triggers.push({
+        key: "ownerOfRecord:review",
+        flag: "Owner of record needs review",
+        resetField: "ownerOfRecord",
+      });
+    }
+    if (answers.divorceOrder === "Yes") {
+      triggers.push({
+        key: "divorceOrder:yes",
+        flag: "Divorce decree or court order involves the property",
+        resetField: "divorceOrder",
+      });
+    }
+    if (answers.homestead === "Yes" && (answers.spouseWillSign === "No" || answers.spouseWillSign === "Not sure")) {
+      triggers.push({
+        key: "homesteadSpouse:review",
+        flag: "Homestead spouse signature issue",
+        resetField: "spouseWillSign",
+      });
+    }
+    if (answers.signingAuthority === "Someone under a power of attorney") {
+      triggers.push({
+        key: "signingAuthority:poa",
+        flag: "Someone will sign under a power of attorney",
+        resetField: "signingAuthority",
+      });
+    }
+    return triggers;
   }, [answers]);
+
+  const tier1Flags = useMemo(
+    () => tier1ReviewTriggers.map((trigger) => trigger.flag),
+    [tier1ReviewTriggers],
+  );
+
+  const unconfirmedReviewTriggers = useMemo(
+    () => tier1ReviewTriggers.filter((trigger) => !confirmedReviewAnswers[trigger.key]),
+    [confirmedReviewAnswers, tier1ReviewTriggers],
+  );
 
   const tier2Tags = useMemo(() => {
     const tags: string[] = [];
@@ -129,7 +202,6 @@ export function IntakeMockup() {
     return "Transfer on Death Deed" as const;
   }, [answers, tier1Flags.length]);
 
-  const showReviewRequired = tier1Flags.length > 0;
   const summaryHref =
     recommendation === "Attorney Review Needed"
       ? "/intake/summary"
@@ -156,6 +228,57 @@ export function IntakeMockup() {
     description: flag,
   }));
 
+  function confirmReviewAnswer(key: string) {
+    setSubmitError("");
+    setConfirmedReviewAnswers((current) => ({ ...current, [key]: true }));
+  }
+
+  function changeReviewAnswer(trigger: ReviewTrigger) {
+    setConfirmedReviewAnswers((current) => {
+      const next = { ...current };
+      delete next[trigger.key];
+      return next;
+    });
+    setAnswer(trigger.resetField, "");
+  }
+
+  function reviewConfirmation(key: string) {
+    const trigger = tier1ReviewTriggers.find((item) => item.key === key);
+    if (!trigger) return null;
+
+    if (confirmedReviewAnswers[key]) {
+      return (
+        <p className="mt-2 rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-xs leading-5 text-white/50">
+          Attorney review acknowledged for this answer.
+        </p>
+      );
+    }
+
+    return (
+      <div className="mt-2 rounded-md border border-amber-300/30 bg-amber-400/10 p-3">
+        <p className="text-sm leading-6 text-amber-50">
+          That answer may require attorney review. Did you mean to choose it?
+        </p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => confirmReviewAnswer(key)}
+            className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-black"
+          >
+            Yes, continue
+          </button>
+          <button
+            type="button"
+            onClick={() => changeReviewAnswer(trigger)}
+            className="rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-white"
+          >
+            Change answer
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const tier2SubmissionFlags = tier2Tags.map((tag) => ({
     tier: "Tier 2",
     label:
@@ -176,6 +299,12 @@ export function IntakeMockup() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitError("");
+
+    if (unconfirmedReviewTriggers.length > 0) {
+      setSubmitError("Please confirm or change each answer that may require attorney review before continuing.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
@@ -241,7 +370,7 @@ export function IntakeMockup() {
             signed engagement.
           </p>
           <div className="mt-8 grid gap-4">
-            <IntakeProgress steps={progressSteps} currentStep={showReviewRequired ? 4 : 0} />
+            <IntakeProgress steps={progressSteps} currentStep={0} />
             <HelpBar showStartOver />
           </div>
         </div>
@@ -249,14 +378,17 @@ export function IntakeMockup() {
 
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-6">
-          {showReviewRequired ? (
-            <ReviewRequiredScreen reasons={tier1Flags} />
-          ) : (
             <form className="grid gap-6" onSubmit={handleSubmit}>
               <IntakeStepCard eyebrow="Step 1" title="Getting Started">
                 <div className="grid gap-5 md:grid-cols-2">
-                  <SelectField label="Is the property located in Texas?" value={answers.texasProperty} onChange={(value) => setAnswer("texasProperty", value)} options={["Yes", "No"]} required />
-                  <SelectField label="What is your main reason for doing this?" value={answers.mainReason} onChange={(value) => setAnswer("mainReason", value)} options={["Avoid probate and pass my home to my family", "Plan for Medicaid or long-term care", "Keep control now and decide later", "Not sure"]} required />
+                  <div>
+                    <SelectField label="Is the property located in Texas?" value={answers.texasProperty} onChange={(value) => setAnswer("texasProperty", value)} options={["Yes", "No"]} required />
+                    {reviewConfirmation("texasProperty:no")}
+                  </div>
+                  <div>
+                    <SelectField label="What is your main reason for doing this?" value={answers.mainReason} onChange={(value) => setAnswer("mainReason", value)} options={["Avoid probate and pass my home to my family", "Plan for Medicaid or long-term care", "Keep control now and decide later", "Not sure"]} required />
+                    {reviewConfirmation("mainReason:medicaid")}
+                  </div>
                   <SelectField label="Might you need someone to sign for you under a power of attorney, now or later?" value={answers.poaConcern} onChange={(value) => setAnswer("poaConcern", value)} options={["Yes", "No", "Not sure"]} required />
                   <SelectField label="Do you want your deed to include a warranty of title?" value={answers.warranty} onChange={(value) => setAnswer("warranty", value)} options={["Yes", "No", "Not sure"]} />
                 </div>
@@ -269,11 +401,23 @@ export function IntakeMockup() {
                   <FieldGroup name="ownerMailingAddress" label="Mailing address" placeholder="Street, city, state, ZIP" required />
                   <FieldGroup name="ownerPhone" label="Phone number" type="tel" placeholder="[firm phone format]" required />
                   <FieldGroup name="ownerEmail" label="Email address" type="email" placeholder="you@example.com" required />
-                  <SelectField label="Are you the current owner shown on the deed or county records?" value={answers.ownerOfRecord} onChange={(value) => setAnswer("ownerOfRecord", value)} options={["Yes", "No", "Not sure"]} required />
+                  <div>
+                    <SelectField label="Are you the current owner shown on the deed or county records?" value={answers.ownerOfRecord} onChange={(value) => setAnswer("ownerOfRecord", value)} options={["Yes", "No", "Not sure"]} required />
+                    {reviewConfirmation("ownerOfRecord:review")}
+                  </div>
                   <SelectField label="Marital status" value={answers.maritalStatus} onChange={(value) => setAnswer("maritalStatus", value)} options={["Married", "Divorced", "Widowed", "Separated", "Single"]} required />
-                  <SelectField label="Will your spouse sign the deed if needed?" value={answers.spouseWillSign} onChange={(value) => setAnswer("spouseWillSign", value)} options={["Yes", "No", "Not sure"]} />
-                  <SelectField label="Does a divorce decree or court order involve this property?" value={answers.divorceOrder} onChange={(value) => setAnswer("divorceOrder", value)} options={["Yes", "No"]} />
-                  <SelectField label="Will you sign the deed yourself, or will someone sign for you under a power of attorney?" value={answers.signingAuthority} onChange={(value) => setAnswer("signingAuthority", value)} options={["Myself", "Someone under a power of attorney"]} required />
+                  <div>
+                    <SelectField label="Will your spouse sign the deed if needed?" value={answers.spouseWillSign} onChange={(value) => setAnswer("spouseWillSign", value)} options={["Yes", "No", "Not sure"]} />
+                    {reviewConfirmation("homesteadSpouse:review")}
+                  </div>
+                  <div>
+                    <SelectField label="Does a divorce decree or court order involve this property?" value={answers.divorceOrder} onChange={(value) => setAnswer("divorceOrder", value)} options={["Yes", "No"]} />
+                    {reviewConfirmation("divorceOrder:yes")}
+                  </div>
+                  <div>
+                    <SelectField label="Will you sign the deed yourself, or will someone sign for you under a power of attorney?" value={answers.signingAuthority} onChange={(value) => setAnswer("signingAuthority", value)} options={["Myself", "Someone under a power of attorney"]} required />
+                    {reviewConfirmation("signingAuthority:poa")}
+                  </div>
                 </div>
               </IntakeStepCard>
 
@@ -337,7 +481,6 @@ export function IntakeMockup() {
                 ) : null}
               </IntakeStepCard>
             </form>
-          )}
         </div>
       </section>
     </>

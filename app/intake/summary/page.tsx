@@ -125,14 +125,25 @@ export default async function IntakeSummaryPage({ searchParams }: SummaryPagePro
           </div>
         </section>
 
-        <CTASection
-          title="Continue when the summary looks right."
-          body="This prototype does not save, submit, or verify the information shown here."
-          primaryLabel="Continue to Engagement Agreement"
-          primaryHref={`/engagement-agreement${nextQuery}`}
-          secondaryLabel="Edit Answers"
-          secondaryHref="/intake"
-        />
+        {selectedDeed ? (
+          <CTASection
+            title="Continue when the summary looks right."
+            body="This prototype does not save, submit, or verify the information shown here."
+            primaryLabel="Continue to Engagement Agreement"
+            primaryHref={`/engagement-agreement${nextQuery}`}
+            secondaryLabel="Edit Answers"
+            secondaryHref="/intake"
+          />
+        ) : (
+          <CTASection
+            title="Attorney review is the next step."
+            body="Because one or more answers may need attorney review, checkout is not available from this summary."
+            primaryLabel="Call or Text EZ Law"
+            primaryHref="tel:+18067776249"
+            secondaryLabel="Edit Answers"
+            secondaryHref="/intake"
+          />
+        )}
       </main>
       <Footer />
     </>

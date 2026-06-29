@@ -1,6 +1,6 @@
 const trustItems = [
   "Reviewed by a licensed Texas attorney",
-  "[N] deeds completed",
+  "May avoid probate",
   "24-hour guarantee",
 ];
 
