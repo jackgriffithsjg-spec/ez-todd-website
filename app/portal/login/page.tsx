@@ -15,9 +15,13 @@ export default function PortalLoginPage() {
     <main className="min-h-screen bg-black px-4 py-12 text-white sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-md flex-col justify-center">
         <a href="/" className="mb-8 inline-flex items-center gap-3" aria-label="EZ TODD home">
-          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white text-sm font-black text-black">
-            EZ
-          </span>
+          <img
+            src="/brand/ez-law-mark-white.png"
+            alt=""
+            className="h-10 w-10 object-contain"
+            width="1000"
+            height="1120"
+          />
           <span>
             <span className="block text-base font-semibold">EZ TODD</span>
             <span className="block text-xs text-white/45">Lawyer Portal</span>

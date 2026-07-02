@@ -8,9 +8,13 @@ export function PortalSidebar() {
   return (
     <aside className="hidden w-56 shrink-0 border-r border-white/10 px-4 py-6 lg:block xl:w-60">
       <a href="/portal" className="flex items-center gap-3" aria-label="EZ TODD portal home">
-        <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white text-sm font-black text-black">
-          EZ
-        </span>
+        <img
+          src="/brand/ez-law-mark-white.png"
+          alt=""
+          className="h-10 w-10 object-contain"
+          width="1000"
+          height="1120"
+        />
         <span>
           <span className="block text-sm font-semibold">EZ TODD</span>
           <span className="block text-xs text-white/45">Lawyer Portal</span>

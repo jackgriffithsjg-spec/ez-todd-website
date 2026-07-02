@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClioInboxLead } from "@/lib/clio";
+import { syncClioIntakeSubmission } from "@/lib/clio";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type IntakeFlag = {
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
     if (relatedError) throw relatedError;
 
     try {
-      await createClioInboxLead({
+      await syncClioIntakeSubmission({
         submissionId,
         clientName: ownerLegalName,
         clientPhone: ownerPhone,
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
         flags,
       });
     } catch (clioError) {
-      console.error("Clio Grow sync failed", clioError);
+      console.error("Clio sync failed", clioError);
     }
 
     return NextResponse.json({ id: submissionId });

@@ -11,9 +11,13 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <a href="/" className="flex items-center gap-3" aria-label="EZ TODD by EZ Law home">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md border border-white/20 bg-white text-sm font-black text-black">
-              EZ
-            </span>
+            <img
+              src="/brand/ez-law-mark-white.png"
+              alt=""
+              className="h-10 w-10 object-contain"
+              width="1000"
+              height="1120"
+            />
             <span className="leading-tight">
               <span className="block text-base font-semibold tracking-normal text-white">
                 EZ TODD

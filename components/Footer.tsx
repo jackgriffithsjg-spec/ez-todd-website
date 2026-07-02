@@ -11,9 +11,13 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.2fr_1fr] lg:px-8">
         <div>
           <div className="mb-4 flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white text-sm font-black text-black">
-              EZ
-            </span>
+            <img
+              src="/brand/ez-law-mark-white.png"
+              alt=""
+              className="h-10 w-10 object-contain"
+              width="1000"
+              height="1120"
+            />
             <span className="text-lg font-semibold">EZ TODD by EZ Law</span>
           </div>
           <p className="max-w-3xl text-sm leading-6 text-white/55">

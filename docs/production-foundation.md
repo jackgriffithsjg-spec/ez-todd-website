@@ -25,12 +25,20 @@ SUPABASE_SERVICE_ROLE_KEY=
 CLIO_GROW_API_TOKEN=
 CLIO_GROW_API_BASE_URL=
 CLIO_GROW_INBOX_LEADS_URL=
+CLIO_CLIENT_ID=
+CLIO_CLIENT_SECRET=
+CLIO_REDIRECT_URI=https://www.transferondeathdeedtexas.com/api/clio/callback
+CLIO_CONNECT_SECRET=
+CLIO_REFRESH_TOKEN=
+CLIO_MANAGE_BASE_URL=https://app.clio.com
 NEXT_PUBLIC_SITE_URL=
 ```
 
 Only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are used by the current implementation. `SUPABASE_SERVICE_ROLE_KEY` is listed for future server-only admin workflows and must never be exposed to browser code.
 
-The Clio variables are server-side configuration for creating a Clio Grow Inbox Lead after a completed intake submission. Set `CLIO_GROW_INBOX_LEADS_URL` directly if the firm has a specific endpoint, or set `CLIO_GROW_API_BASE_URL` and the app will post to `/inbox_leads`. If Clio is not configured or the Clio request fails, the website still saves the intake submission and logs the sync issue for internal follow-up.
+The Clio variables are server-side configuration for the Clio Manage OAuth app. Set `CLIO_CLIENT_ID`, `CLIO_CLIENT_SECRET`, `CLIO_REDIRECT_URI`, `CLIO_CONNECT_SECRET`, and `CLIO_MANAGE_BASE_URL`, then visit `/api/clio/connect?setup=YOUR_CONNECT_SECRET` to authorize the firm Clio account. The callback displays a `CLIO_REFRESH_TOKEN`; add it to local and production environment variables, then restart/redeploy.
+
+Legacy Clio Grow variables remain as a fallback only when `CLIO_REFRESH_TOKEN` is not configured. If Clio is not configured or the Clio request fails, the website still saves the intake submission and logs the sync issue for internal follow-up.
 
 ## Database Schema
 
@@ -87,7 +95,7 @@ The route stores:
 - Legal description add-on status.
 - Estimated price and matter status.
 
-After the database save succeeds, the route attempts to create a Clio Grow Inbox Lead containing the client contact details, property summary, preliminary recommendation, review flags, and local submission ID.
+After the database save succeeds, the route attempts to sync the intake to Clio. With `CLIO_REFRESH_TOKEN` configured, it refreshes a Clio Manage access token and verifies the connection against the Clio user endpoint. The final record-creation mapping still needs to be selected: for example Contact only, Contact plus Matter, Clio Grow lead, or another firm workflow. Without a refresh token, it falls back to the legacy Clio Grow inbox-lead integration if those variables are configured.
 
 The intake does not collect or store Social Security numbers, dates of birth, bank information, financial account numbers, or ID uploads.
 

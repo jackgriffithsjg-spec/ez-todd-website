@@ -3,9 +3,13 @@ export function Hero() {
     <section className="relative overflow-hidden bg-black px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <div className="mb-8 flex flex-col items-center">
-          <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-md border border-white/20 bg-white text-2xl font-black text-black">
-            EZ
-          </div>
+          <img
+            src="/brand/ez-law-logo-full-white.png"
+            alt="EZ Law"
+            className="mb-5 h-auto w-52 object-contain sm:w-64"
+            width="2000"
+            height="1600"
+          />
           <p className="text-5xl font-semibold tracking-normal sm:text-6xl">EZ TODD</p>
           <p className="mt-2 text-sm font-medium uppercase tracking-[0.24em] text-white/55">
             by EZ Law
