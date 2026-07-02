@@ -9,9 +9,9 @@ export function PortalSidebar() {
     <aside className="hidden w-56 shrink-0 border-r border-white/10 px-4 py-6 lg:block xl:w-60">
       <a href="/portal" className="flex items-center gap-3" aria-label="EZ TODD portal home">
         <img
-          src="/brand/ez-law-mark-white.png"
+          src="/brand/ez-law-mark-white-v2.png"
           alt=""
-          className="h-10 w-10 object-contain"
+          className="block h-10 w-10 object-contain"
           width="1000"
           height="1120"
         />

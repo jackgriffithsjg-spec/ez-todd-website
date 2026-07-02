@@ -12,9 +12,9 @@ export function Header() {
         <div className="flex items-center justify-between gap-4">
           <a href="/" className="flex items-center gap-3" aria-label="EZ TODD by EZ Law home">
             <img
-              src="/brand/ez-law-mark-white.png"
+              src="/brand/ez-law-mark-white-v2.png"
               alt=""
-              className="h-10 w-10 object-contain"
+              className="block h-10 w-10 object-contain"
               width="1000"
               height="1120"
             />

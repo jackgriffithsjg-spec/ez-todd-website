@@ -16,9 +16,9 @@ export default function PortalLoginPage() {
       <div className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-md flex-col justify-center">
         <a href="/" className="mb-8 inline-flex items-center gap-3" aria-label="EZ TODD home">
           <img
-            src="/brand/ez-law-mark-white.png"
+            src="/brand/ez-law-mark-white-v2.png"
             alt=""
-            className="h-10 w-10 object-contain"
+            className="block h-10 w-10 object-contain"
             width="1000"
             height="1120"
           />

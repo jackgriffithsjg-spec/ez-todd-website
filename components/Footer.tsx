@@ -12,9 +12,9 @@ export function Footer() {
         <div>
           <div className="mb-4 flex items-center gap-3">
             <img
-              src="/brand/ez-law-mark-white.png"
+              src="/brand/ez-law-mark-white-v2.png"
               alt=""
-              className="h-10 w-10 object-contain"
+              className="block h-10 w-10 object-contain"
               width="1000"
               height="1120"
             />

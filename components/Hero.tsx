@@ -4,9 +4,9 @@ export function Hero() {
       <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <div className="mb-8 flex flex-col items-center">
           <img
-            src="/brand/ez-law-logo-full-white.png"
+            src="/brand/ez-law-logo-full-white-v2.png"
             alt="EZ Law"
-            className="mb-5 h-auto w-52 object-contain sm:w-64"
+            className="mb-5 block h-auto w-52 object-contain sm:w-64"
             width="2000"
             height="1600"
           />
