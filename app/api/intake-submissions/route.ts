@@ -8,6 +8,19 @@ type IntakeFlag = {
   description?: string;
 };
 
+type SubmissionStage =
+  | "reading the intake form"
+  | "connecting to Supabase"
+  | "saving the main intake record"
+  | "saving beneficiary or flag details"
+  | "finalizing the submission";
+
+type ErrorWithSupabaseFields = Error & {
+  code?: string;
+  details?: string;
+  hint?: string;
+};
+
 function stringValue(value: unknown, fallback: string) {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
@@ -35,13 +48,34 @@ function getPrice(deedType: string, legalDescriptionAddon: boolean) {
   };
 }
 
+function errorDetail(error: unknown) {
+  if (error instanceof Error) {
+    const supabaseError = error as ErrorWithSupabaseFields;
+    const parts = [
+      supabaseError.message,
+      supabaseError.code ? `Code: ${supabaseError.code}` : "",
+      supabaseError.details ? `Details: ${supabaseError.details}` : "",
+      supabaseError.hint ? `Hint: ${supabaseError.hint}` : "",
+    ].filter(Boolean);
+
+    return parts.join(" ");
+  }
+
+  if (typeof error === "string") return error;
+  return "No additional error detail was provided.";
+}
+
 export async function POST(request: Request) {
+  let stage: SubmissionStage = "reading the intake form";
+
   try {
     const body = await request.json();
     const flags = Array.isArray(body.flags) ? (body.flags as IntakeFlag[]) : [];
     const legalDescriptionAddon = body.legalDescriptionAddon === true;
     const deedType = stringValue(body.recommendation, "Transfer on Death Deed");
     const price = getPrice(deedType, legalDescriptionAddon);
+
+    stage = "connecting to Supabase";
     const supabase = await createServerSupabaseClient();
     const submissionId = crypto.randomUUID();
     const ownerLegalName = stringValue(body.ownerLegalName, "[owner_legal_name]");
@@ -53,6 +87,7 @@ export async function POST(request: Request) {
       ? "Needs Attorney Review"
       : "New Submission";
 
+    stage = "saving the main intake record";
     const { error: submissionError } = await supabase
       .from("submissions")
       .insert({
@@ -83,6 +118,7 @@ export async function POST(request: Request) {
     const beneficiaryName = stringValue(body.primaryBeneficiaryName, "[primary_beneficiary]");
     const primaryBeneficiaryShare = nullableNumber(body.primaryBeneficiaryShare);
 
+    stage = "saving beneficiary or flag details";
     const relatedInserts = [
       supabase.from("submission_beneficiaries").insert({
         submission_id: submissionId,
@@ -126,6 +162,7 @@ export async function POST(request: Request) {
     const relatedError = results.find((result) => result.error)?.error;
     if (relatedError) throw relatedError;
 
+    stage = "finalizing the submission";
     try {
       await syncClioIntakeSubmission({
         submissionId,
@@ -148,7 +185,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        error: "Submission failed. Please try again or contact EZ Law.",
+        error: `Submission failed while ${stage}.`,
+        detail: errorDetail(error),
       },
       { status: 500 },
     );

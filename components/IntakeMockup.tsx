@@ -56,6 +56,11 @@ const initialState: IntakeState = {
   legalDescription: "",
 };
 
+type IntakeSubmissionError = {
+  error?: string;
+  detail?: string;
+};
+
 const reviewKeysByField: Partial<Record<keyof IntakeState, string[]>> = {
   texasProperty: ["texasProperty:no"],
   mainReason: ["mainReason:medicaid"],
@@ -304,42 +309,56 @@ export function IntakeMockup() {
     const legalDescriptionAddon =
       answers.legalDescription === "No" || answers.legalDescription === "Not sure";
 
-    const response = await fetch("/api/intake-submissions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ownerLegalName: formData.get("ownerLegalName"),
-        ownerPriorName: answers.nameChanged === "Yes" ? "[owner_prior_name]" : null,
-        ownerMailingAddress: formData.get("ownerMailingAddress"),
-        ownerPhone: formData.get("ownerPhone"),
-        ownerEmail: formData.get("ownerEmail"),
-        ownerMaritalStatus: answers.maritalStatus,
-        spouseLegalName: answers.maritalStatus === "Married" ? "[spouse_legal_name]" : null,
-        propertyCounty: formData.get("propertyCounty"),
-        propertyAddress: formData.get("propertyAddress"),
-        propertyType: answers.propertyType,
-        isHomestead: answers.homestead,
-        legalDescriptionStatus: answers.legalDescription,
-        legalDescription: legalDescriptionAddon ? null : "[legal_description_from_client]",
-        recommendation,
-        recommendationReason:
-          recommendation === "Lady Bird Deed"
-            ? "Preliminary guidance selected Lady Bird Deed based on flexibility, warranty, or power-of-attorney answers."
-            : "Preliminary guidance selected Transfer on Death Deed based on probate-avoidance answers.",
-        legalDescriptionAddon,
-        flags: [...tier1SubmissionFlags, ...tier2SubmissionFlags],
-        primaryBeneficiaryName: formData.get("primaryBeneficiaryName"),
-        primaryBeneficiaryRelationship: formData.get("primaryBeneficiaryRelationship"),
-        primaryBeneficiaryAddress: formData.get("primaryBeneficiaryAddress"),
-        alternateBeneficiaryName: formData.get("alternateBeneficiaryName"),
-      }),
-    });
+    let response: Response;
+
+    try {
+      response = await fetch("/api/intake-submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ownerLegalName: formData.get("ownerLegalName"),
+          ownerPriorName: answers.nameChanged === "Yes" ? "[owner_prior_name]" : null,
+          ownerMailingAddress: formData.get("ownerMailingAddress"),
+          ownerPhone: formData.get("ownerPhone"),
+          ownerEmail: formData.get("ownerEmail"),
+          ownerMaritalStatus: answers.maritalStatus,
+          spouseLegalName: answers.maritalStatus === "Married" ? "[spouse_legal_name]" : null,
+          propertyCounty: formData.get("propertyCounty"),
+          propertyAddress: formData.get("propertyAddress"),
+          propertyType: answers.propertyType,
+          isHomestead: answers.homestead,
+          legalDescriptionStatus: answers.legalDescription,
+          legalDescription: legalDescriptionAddon ? null : "[legal_description_from_client]",
+          recommendation,
+          recommendationReason:
+            recommendation === "Lady Bird Deed"
+              ? "Preliminary guidance selected Lady Bird Deed based on flexibility, warranty, or power-of-attorney answers."
+              : "Preliminary guidance selected Transfer on Death Deed based on probate-avoidance answers.",
+          legalDescriptionAddon,
+          flags: [...tier1SubmissionFlags, ...tier2SubmissionFlags],
+          primaryBeneficiaryName: formData.get("primaryBeneficiaryName"),
+          primaryBeneficiaryRelationship: formData.get("primaryBeneficiaryRelationship"),
+          primaryBeneficiaryAddress: formData.get("primaryBeneficiaryAddress"),
+          alternateBeneficiaryName: formData.get("alternateBeneficiaryName"),
+        }),
+      });
+    } catch (error) {
+      setIsSubmitting(false);
+      setSubmitError(
+        error instanceof Error
+          ? `Submission failed before reaching the server. ${error.message}`
+          : "Submission failed before reaching the server. Please check the connection and try again.",
+      );
+      return;
+    }
 
     setIsSubmitting(false);
 
     if (!response.ok) {
-      const data = await response.json().catch(() => null);
-      setSubmitError(data?.error || "Submission failed. Please try again or contact EZ Law.");
+      const data = (await response.json().catch(() => null)) as IntakeSubmissionError | null;
+      const errorMessage = data?.error || "Submission failed. Please try again or contact EZ Law.";
+      const detail = data?.detail ? ` Reason: ${data.detail}` : "";
+      setSubmitError(`${errorMessage}${detail} Status: ${response.status}.`);
       return;
     }
 
