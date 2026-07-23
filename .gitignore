@@ -2,6 +2,7 @@
 node_modules
 out
 dist
+.open-next
 coverage
 .vercel
 github-ready
