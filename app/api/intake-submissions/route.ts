@@ -16,6 +16,17 @@ function booleanFromYesNo(value: unknown) {
   return value === "Yes";
 }
 
+function nullableNumber(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value !== "string") return null;
+
+  const normalized = value.replace("%", "").trim();
+  if (!normalized) return null;
+
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 function getPrice(deedType: string, legalDescriptionAddon: boolean) {
   const base = deedType === "Lady Bird Deed" ? 600 : deedType === "Attorney Review Needed" ? 0 : 500;
   return {
@@ -70,6 +81,7 @@ export async function POST(request: Request) {
 
     if (submissionError) throw submissionError;
     const beneficiaryName = stringValue(body.primaryBeneficiaryName, "[primary_beneficiary]");
+    const primaryBeneficiaryShare = nullableNumber(body.primaryBeneficiaryShare);
 
     const relatedInserts = [
       supabase.from("submission_beneficiaries").insert({
@@ -78,7 +90,7 @@ export async function POST(request: Request) {
         full_name: beneficiaryName,
         relationship: body.primaryBeneficiaryRelationship || null,
         mailing_address: body.primaryBeneficiaryAddress || null,
-        share_percentage: body.primaryBeneficiaryShare || null,
+        share_percentage: primaryBeneficiaryShare,
         is_alternate: false,
       }),
     ];
@@ -132,12 +144,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ id: submissionId });
   } catch (error) {
+    console.error("Intake submission failed", error);
+
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Submission failed. Please try again or contact EZ Law.",
+        error: "Submission failed. Please try again or contact EZ Law.",
       },
       { status: 500 },
     );

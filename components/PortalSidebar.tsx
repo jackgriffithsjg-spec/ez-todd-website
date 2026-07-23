@@ -31,8 +31,8 @@ export function PortalSidebar() {
           </a>
         ))}
       </nav>
-      <p className="mt-8 rounded-md border border-amber-300/20 bg-amber-300/10 p-3 text-xs leading-5 text-amber-100/80">
-        Prototype only. Direct URL access is not secure and must be replaced before launch.
+      <p className="mt-8 rounded-md border border-white/10 bg-white/[0.03] p-3 text-xs leading-5 text-white/55">
+        Secure attorney portal for reviewing submitted EZ TODD intake records.
       </p>
     </aside>
   );
