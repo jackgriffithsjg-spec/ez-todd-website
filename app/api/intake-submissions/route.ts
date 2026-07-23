@@ -25,6 +25,10 @@ function stringValue(value: unknown, fallback: string) {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
+function nullableString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
 function booleanFromYesNo(value: unknown) {
   return value === "Yes";
 }
@@ -49,16 +53,22 @@ function getPrice(deedType: string, legalDescriptionAddon: boolean) {
 }
 
 function errorDetail(error: unknown) {
-  if (error instanceof Error) {
-    const supabaseError = error as ErrorWithSupabaseFields;
+  if (error && typeof error === "object") {
+    const supabaseError = error as Partial<ErrorWithSupabaseFields>;
     const parts = [
-      supabaseError.message,
+      typeof supabaseError.message === "string" ? supabaseError.message : "",
       supabaseError.code ? `Code: ${supabaseError.code}` : "",
       supabaseError.details ? `Details: ${supabaseError.details}` : "",
       supabaseError.hint ? `Hint: ${supabaseError.hint}` : "",
     ].filter(Boolean);
 
-    return parts.join(" ");
+    if (parts.length > 0) return parts.join(" ");
+
+    try {
+      return JSON.stringify(error);
+    } catch {
+      return "The server returned an unreadable error object.";
+    }
   }
 
   if (typeof error === "string") return error;
@@ -93,21 +103,21 @@ export async function POST(request: Request) {
       .insert({
         id: submissionId,
         owner_legal_name: ownerLegalName,
-        owner_prior_name: body.ownerPriorName || null,
+        owner_prior_name: nullableString(body.ownerPriorName),
         owner_mailing_address: stringValue(body.ownerMailingAddress, "[owner_mailing_address]"),
         owner_phone: ownerPhone,
         owner_email: ownerEmail,
         owner_marital_status: stringValue(body.ownerMaritalStatus, "Not provided"),
-        spouse_legal_name: body.spouseLegalName || null,
+        spouse_legal_name: nullableString(body.spouseLegalName),
         property_county: propertyCounty,
         property_address: propertyAddress,
         property_type: stringValue(body.propertyType, "Not provided"),
         is_homestead: booleanFromYesNo(body.isHomestead),
         legal_description_status: stringValue(body.legalDescriptionStatus, "Not provided"),
-        legal_description: body.legalDescription || null,
+        legal_description: nullableString(body.legalDescription),
         deed_type_preliminary: deedType,
         deed_type_selected: deedType === "Attorney Review Needed" ? null : deedType,
-        recommendation_reason: body.recommendationReason || null,
+        recommendation_reason: nullableString(body.recommendationReason),
         price_base: price.base,
         legal_description_addon: legalDescriptionAddon,
         price_total: price.total,
