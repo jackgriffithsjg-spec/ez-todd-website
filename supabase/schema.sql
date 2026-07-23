@@ -125,6 +125,12 @@ on public.submissions for insert
 to anon
 with check (true);
 
+drop policy if exists "Authenticated users can create intake submissions" on public.submissions;
+create policy "Authenticated users can create intake submissions"
+on public.submissions for insert
+to authenticated
+with check (true);
+
 drop policy if exists "Authenticated users can read beneficiaries" on public.submission_beneficiaries;
 create policy "Authenticated users can read beneficiaries"
 on public.submission_beneficiaries for select
@@ -137,6 +143,12 @@ on public.submission_beneficiaries for insert
 to anon
 with check (true);
 
+drop policy if exists "Authenticated users can create beneficiaries" on public.submission_beneficiaries;
+create policy "Authenticated users can create beneficiaries"
+on public.submission_beneficiaries for insert
+to authenticated
+with check (true);
+
 drop policy if exists "Authenticated users can read flags" on public.submission_flags;
 create policy "Authenticated users can read flags"
 on public.submission_flags for select
@@ -147,6 +159,12 @@ drop policy if exists "Public users can create flags" on public.submission_flags
 create policy "Public users can create flags"
 on public.submission_flags for insert
 to anon
+with check (true);
+
+drop policy if exists "Authenticated users can create flags" on public.submission_flags;
+create policy "Authenticated users can create flags"
+on public.submission_flags for insert
+to authenticated
 with check (true);
 
 drop policy if exists "Authenticated users can read notes" on public.submission_notes;
