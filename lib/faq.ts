@@ -10,77 +10,72 @@ export type FaqSection = {
 
 export const faqSections: FaqSection[] = [
   {
-    title: "Patents and Inventions",
+    title: "Transfer on Death Deeds",
     items: [
       {
-        question: "Who is Patent Ed?",
+        question: "What is a Texas Transfer on Death Deed?",
         answer:
-          "Patent Ed is Edmund Zafrani, the attorney behind EZ Law. He is licensed by the State Bar of Texas and registered to practice before the United States Patent and Trademark Office.",
+          "A Texas Transfer on Death Deed lets an owner name a beneficiary to receive real property after the owner dies. The owner keeps control during life, and the deed must be signed, notarized, and recorded before death.",
       },
       {
-        question: "Can EZ Law help with a provisional patent application?",
+        question: "Can a Transfer on Death Deed help avoid probate?",
         answer:
-          "Yes. EZ Law assists with provisional patent applications, non-provisional patent applications, patentability discussions, and USPTO Office Action responses.",
+          "It may help the named property pass outside probate, but it is not a complete estate plan and may not fit every situation. EZ TODD has a licensed Texas attorney review your answers before drafting.",
       },
       {
-        question: "Do I need to keep my invention confidential before filing?",
+        question: "Can I change my mind later?",
         answer:
-          "You should be careful before publicly disclosing an invention. Public disclosures can affect patent rights and filing deadlines. Speak with a patent attorney before sharing details widely.",
+          "In many situations, yes. A Transfer on Death Deed can usually be revoked or replaced if the owner is living and legally able to sign. The right approach depends on the facts.",
       },
     ],
   },
   {
-    title: "Brands and Creative Work",
+    title: "Lady Bird Deeds",
     items: [
       {
-        question: "Can EZ Law help register a trademark?",
+        question: "What is a Lady Bird Deed?",
         answer:
-          "Yes. EZ Law helps with trademark searches, USPTO applications, Office Action responses, trademark maintenance, and brand protection strategy.",
+          "A Lady Bird Deed is a Texas deed option that can transfer property at death while reserving broad rights for the current owner during life. It may be useful in situations where a standard Transfer on Death Deed is not the best fit.",
       },
       {
-        question: "Does copyright protection happen automatically?",
+        question: "Which deed do I need?",
         answer:
-          "Copyright protection generally begins when an original work is fixed in a tangible form, but registration can strengthen enforcement options and may be required before filing a lawsuit.",
+          "If you are not sure, start with the questionnaire. EZ TODD uses your answers to flag whether a Transfer on Death Deed, Lady Bird Deed, or attorney review is the better path.",
       },
     ],
   },
   {
-    title: "Business and Property",
+    title: "Pricing and Process",
     items: [
       {
-        question: "Does EZ Law help form Texas LLCs?",
+        question: "How much does EZ TODD cost?",
         answer:
-          "Yes. EZ Law assists with Texas business formation, operating agreements, contracts, compliance questions, and outside general counsel support.",
+          "The flat fee is $500 for a Transfer on Death Deed and $600 for a Lady Bird Deed. Government recording fees are included. A $20 legal description retrieval add-on may apply if needed, and notary fees are separate.",
       },
       {
-        question: "Can EZ Law review real estate contracts?",
+        question: "What happens after I submit the intake?",
         answer:
-          "Yes. EZ Law handles selected real estate document review, lease review, purchase agreement review, title concern evaluation, and dispute-prevention work.",
+          "A licensed Texas attorney reviews your information, confirms the details with you, prepares the deed, and gives signing and notarization instructions.",
       },
       {
-        question: "Does EZ Law still offer Transfer on Death Deeds and Lady Bird deeds?",
+        question: "Does submitting the form create an attorney-client relationship?",
         answer:
-          "Yes. Texas deed work is available, and EZ Law has a separate EZ TODD service for Transfer on Death Deeds and Lady Bird deeds.",
+          "No. Submitting the intake, calling, texting, or using the website does not create an attorney-client relationship. Representation begins only when EZ Law accepts your matter and you sign the engagement agreement.",
       },
     ],
   },
   {
-    title: "Working With EZ Law",
+    title: "Eligibility",
     items: [
       {
-        question: "Where is EZ Law located?",
+        question: "Is EZ TODD only for Texas property?",
         answer:
-          "EZ Law is based in Lubbock, Texas, and serves clients in West Texas and across Texas when the matter can be handled remotely.",
+          "Yes. EZ TODD is for Texas real property only.",
       },
       {
-        question: "Can I call or text EZ Law?",
+        question: "Should I enter sensitive information?",
         answer:
-          "Yes. You can call or text (806) 777-6249. Do not send confidential facts until EZ Law confirms representation.",
-      },
-      {
-        question: "Does contacting EZ Law create an attorney-client relationship?",
-        answer:
-          "No. Contacting the firm, reading the website, or sending a message does not create an attorney-client relationship. Representation begins only after EZ Law accepts the matter and an engagement agreement is signed.",
+          "No. Do not enter Social Security numbers, dates of birth, bank or financial account numbers, or upload identification documents through the intake.",
       },
     ],
   },

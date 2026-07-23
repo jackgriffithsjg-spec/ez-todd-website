@@ -1,43 +1,40 @@
 import type { Metadata } from "next";
 import { CTASection } from "@/components/CTASection";
+import { DeedChoiceCards } from "@/components/DeedChoiceCards";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { practiceAreas } from "@/lib/practiceAreas";
+import { Hero } from "@/components/Hero";
+import { PricingPreview } from "@/components/PricingPreview";
+import { ProcessSteps } from "@/components/ProcessSteps";
+import { TrustStrip } from "@/components/TrustStrip";
 import { getLegalServiceJsonLd, getWebsiteJsonLd } from "@/lib/schema";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Zafrani Law PLLC / EZ Law | Lubbock Patent Attorney and Texas Legal Services",
+  title: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
   description:
-    "EZ Law helps Texas clients with patents, trademarks, business law, copyright, real estate, mediation, estate planning, and civil litigation.",
+    "EZ TODD by EZ Law offers flat-fee Texas Transfer on Death Deeds and Lady Bird Deeds prepared and reviewed by a licensed Texas attorney.",
   alternates: {
     canonical: absoluteUrl("/"),
   },
 };
 
-const answerCards = [
+const processSteps = [
   {
-    question: "Who is Patent Ed?",
-    answer:
-      "Patent Ed is Edmund Zafrani, a Lubbock attorney licensed by the State Bar of Texas and registered with the United States Patent and Trademark Office.",
+    title: "Answer a few questions",
+    description:
+      "Choose a deed path and provide the basic property, owner, and beneficiary information.",
   },
   {
-    question: "What does EZ Law help with?",
-    answer:
-      "EZ Law helps with patents, trademarks, copyright, business formation and contracts, real estate documents, mediation, estate planning, and selected civil disputes.",
+    title: "Confirm with the attorney",
+    description:
+      "A licensed Texas attorney reviews your information, confirms the details, and prepares the deed.",
   },
   {
-    question: "Where does EZ Law serve clients?",
-    answer:
-      "The office is in Lubbock, Texas, with services available to clients in West Texas and across Texas when the matter can be handled remotely.",
+    title: "Notarize, and you are done",
+    description:
+      "You sign and notarize using our instructions, return the deed, and we submit it for recording.",
   },
-];
-
-const proofPoints = [
-  "USPTO-registered patent attorney",
-  "State Bar of Texas licensed attorney",
-  "Flat-fee options when the scope fits",
-  "Call or text access at (806) 777-6249",
 ];
 
 export default function Home() {
@@ -48,137 +45,85 @@ export default function Home() {
     <>
       <Header />
       <main className="bg-black text-white">
-        <section className="relative overflow-hidden bg-black px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-center">
-            <div>
-              <img
-                src="/brand/ez-law-logo-full-white-v2.png"
-                alt="EZ Law"
-                className="mb-7 block h-auto w-52 object-contain sm:w-64"
-                width="2000"
-                height="1600"
-              />
-              <p className="mb-4 inline-flex rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/75">
-                Lubbock patent attorney and Texas legal services
+        <Hero />
+        <TrustStrip />
+
+        <section className="px-4 py-14 sm:px-6 lg:px-8" aria-labelledby="choices-heading">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto mb-8 max-w-2xl text-center">
+              <h2 id="choices-heading" className="text-3xl font-semibold tracking-normal sm:text-4xl">
+                Choose your deed path
+              </h2>
+              <p className="mt-4 text-base leading-7 text-white/55">
+                Start with the guidance page to determine which option is right for you.
               </p>
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-normal text-white sm:text-6xl">
-                Zafrani Law PLLC / EZ Law helps Texas creators, owners, and businesses protect what matters.
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
-                Work directly with Edmund Zafrani at EZ Law for patent, trademark,
-                business, copyright, real estate, mediation, estate planning, and
-                civil litigation matters.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="/contact"
-                  className="inline-flex min-h-12 items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-black transition hover:bg-white/85"
-                >
-                  Book Online
-                </a>
-                <a
-                  href={siteConfig.phoneHref}
-                  className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
-                >
-                  Call or Text {siteConfig.phoneDisplay}
-                </a>
-              </div>
             </div>
-
-            <aside className="rounded-md border border-white/10 bg-white/[0.03] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
-                Quick answers
-              </p>
-              <div className="mt-5 divide-y divide-white/10">
-                {answerCards.map((item) => (
-                  <article key={item.question} className="py-4 first:pt-0 last:pb-0">
-                    <h2 className="text-lg font-semibold tracking-normal">{item.question}</h2>
-                    <p className="mt-2 text-sm leading-6 text-white/60">{item.answer}</p>
-                  </article>
-                ))}
-              </div>
-            </aside>
+            <DeedChoiceCards />
           </div>
         </section>
 
-        <section className="border-y border-white/10 bg-black px-4 py-5 text-white sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-3 text-center text-sm font-semibold text-white/75 md:grid-cols-4">
-            {proofPoints.map((item) => (
-              <div key={item} className="rounded-md border border-white/10 px-4 py-3">
-                {item}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-14 sm:px-6 lg:px-8" aria-labelledby="practice-heading">
+        <section
+          id="how-it-works"
+          className="border-y border-white/10 bg-white/[0.03] px-4 py-14 sm:px-6 lg:px-8"
+          aria-labelledby="process-heading"
+        >
           <div className="mx-auto max-w-6xl">
             <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
-                  Practice areas
+                  Three simple steps
                 </p>
-                <h2 id="practice-heading" className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
-                  Legal help built for searchable, specific problems.
+                <h2 id="process-heading" className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
+                  From questions to recorded deed
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-6 text-white/55">
-                Each practice page answers the questions people actually search before
-                calling a lawyer.
+                Help is one call or text away while you complete the process.
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {practiceAreas.map((area) => (
-                <a
-                  key={area.slug}
-                  href={`/${area.slug}`}
-                  className="group rounded-md border border-white/10 bg-white/[0.03] p-5 transition hover:border-white/35 hover:bg-white/[0.07]"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
-                    {area.eyebrow}
-                  </p>
-                  <h3 className="mt-3 text-xl font-semibold text-white">{area.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-white/55">{area.summary}</p>
-                  <span className="mt-5 inline-flex text-sm font-semibold text-white group-hover:underline">
-                    View service
-                  </span>
-                </a>
-              ))}
-            </div>
+            <ProcessSteps steps={processSteps} />
           </div>
         </section>
 
-        <section className="border-y border-white/10 bg-white/[0.03] px-4 py-14 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1fr] lg:items-start">
-            <div>
+        <section id="pricing" className="px-4 py-14 sm:px-6 lg:px-8" aria-labelledby="pricing-heading">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto mb-8 max-w-2xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
-                Why the redesign works
+                Flat-fee pricing available
               </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
-                Clear answers for Google, AI results, and real clients.
+              <h2 id="pricing-heading" className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
+                Real prices. Transparent pricing for everyone.
               </h2>
+              <p className="mt-4 text-base leading-7 text-white/55">
+                Government recording fees are included in the flat fee.
+              </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Direct question-and-answer content for answer engines.",
-                "Dedicated pages for every high-intent practice area.",
-                "Local signals for Lubbock, West Texas, and Texas-wide service.",
-                "Structured data for legal service, website, and FAQs.",
-              ].map((item) => (
-                <div key={item} className="rounded-md border border-white/10 bg-black p-5 text-sm leading-6 text-white/60">
-                  {item}
-                </div>
-              ))}
-            </div>
+            <PricingPreview />
+          </div>
+        </section>
+
+        <section
+          id="faq"
+          className="border-y border-white/10 bg-white/[0.03] px-4 py-12 sm:px-6 lg:px-8"
+          aria-labelledby="faq-heading"
+        >
+          <div className="mx-auto max-w-6xl text-center">
+            <h2 id="faq-heading" className="text-3xl font-semibold tracking-normal sm:text-4xl">
+              Questions before you start?
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-white/55">
+              The next step stays simple: choose a deed, start now, or call/text{" "}
+              {siteConfig.phoneDisplay} for help.
+            </p>
           </div>
         </section>
 
         <CTASection
           id="final-cta"
-          title="Talk with Patent Ed."
-          body="Call, text, or book online to ask about patents, trademarks, business documents, real estate, mediation, estate planning, or civil litigation."
-          primaryLabel="Book Online"
-          primaryHref="/contact"
+          title="Start your Texas deed today"
+          body="A simple TODD or Lady Bird deed is drafted and submitted for recording in 24 hours or less, guaranteed, excluding weekends and holidays."
+          primaryLabel="Start Now"
+          primaryHref="/start"
           secondaryLabel={`Call/Text ${siteConfig.phoneDisplay}`}
           secondaryHref={siteConfig.phoneHref}
         />

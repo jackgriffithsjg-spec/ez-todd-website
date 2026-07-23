@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "EZ Law",
-  shortName: "Patent Ed",
+  name: "EZ TODD by EZ Law",
+  shortName: "EZ TODD",
   legalName: "Zafrani Law PLLC",
   responsibleAttorney: "Edmund Zafrani",
   phoneDisplay: "(806) 777-6249",
@@ -13,7 +13,7 @@ export const siteConfig = {
   state: "Texas",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.transferondeathdeedtexas.com",
   description:
-    "Lubbock patent attorney and Texas legal services for patents, trademarks, business law, copyright, real estate, mediation, estate planning, and civil litigation.",
+    "Flat-fee Texas Transfer on Death Deeds and Lady Bird Deeds prepared and reviewed by a licensed Texas attorney.",
 };
 
 export function absoluteUrl(path = "/") {

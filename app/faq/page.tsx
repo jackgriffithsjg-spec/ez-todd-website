@@ -5,9 +5,9 @@ import { Header } from "@/components/Header";
 import { faqSections, getFaqJsonLd } from "@/lib/faq";
 
 export const metadata: Metadata = {
-  title: "EZ Law FAQ",
+  title: "EZ TODD FAQ | Texas Transfer on Death Deeds",
   description:
-    "Plain-English answers about working with EZ Law for patents, trademarks, business law, copyright, real estate, estate planning, mediation, and civil litigation.",
+    "Plain-English answers about EZ TODD, Texas Transfer on Death Deeds, Lady Bird Deeds, pricing, and the deed intake process.",
 };
 
 export default function FaqPage() {
@@ -23,12 +23,11 @@ export default function FaqPage() {
               FAQ
             </p>
             <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-              EZ Law questions, answered plainly.
+              EZ TODD questions, answered plainly.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
-              Common questions about Patent Ed, intellectual property, business
-              documents, real estate, estate planning, mediation, and how to contact
-              EZ Law without accidentally sending confidential information too early.
+              Common questions about Texas Transfer on Death Deeds, Lady Bird Deeds,
+              pricing, intake review, and working with EZ TODD by EZ Law.
             </p>
           </div>
         </section>
@@ -66,10 +65,10 @@ export default function FaqPage() {
         <CTASection
           title="Still have a question?"
           body="Call or text (806) 777-6249, or use the contact page to book online."
-          primaryLabel="Contact EZ Law"
-          primaryHref="/contact"
-          secondaryLabel="Practice Areas"
-          secondaryHref="/practice-areas"
+          primaryLabel="Start Now"
+          primaryHref="/start"
+          secondaryLabel="Call/Text (806) 777-6249"
+          secondaryHref="tel:+18067776249"
         />
       </main>
       <Footer />

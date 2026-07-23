@@ -1,17 +1,18 @@
 import type { MetadataRoute } from "next";
-import { practiceAreas } from "@/lib/practiceAreas";
 import { absoluteUrl } from "@/lib/site";
 
 const routes = [
   "",
-  "/practice-areas",
-  "/meet-patent-ed",
-  "/contact",
+  "/how-it-works",
+  "/pricing",
   "/faq",
+  "/start",
+  "/which-deed-do-i-need",
+  "/intake",
+  "/contact",
   "/privacy-policy",
   "/terms-of-use",
   "/legal-and-disclaimers",
-  ...practiceAreas.map((area) => `/${area.slug}`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

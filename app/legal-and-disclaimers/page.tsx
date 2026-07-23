@@ -4,9 +4,9 @@ import { Header } from "@/components/Header";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Legal Notices and Disclaimers",
+  title: "EZ TODD Legal Notices and Disclaimers",
   description:
-    "Legal notices and disclaimers for EZ Law, a Texas law practice based in Lubbock.",
+    "Legal notices and disclaimers for EZ TODD by EZ Law.",
   alternates: {
     canonical: absoluteUrl("/legal-and-disclaimers"),
   },
@@ -26,16 +26,16 @@ const notices = [
     body: "Using this website, reading materials, submitting a message, calling, texting, or emailing does not create an attorney-client relationship. Representation begins only after EZ Law accepts the matter and an engagement agreement is signed. Do not send confidential or sensitive information before that happens.",
   },
   {
-    title: "Texas practice and selected federal matters",
-    body: "EZ Law provides Texas legal services and selected federal intellectual property services, including patent and trademark matters before the USPTO when appropriate. EZ Law does not provide legal services in jurisdictions where the firm is not authorized to practice.",
+    title: "Texas deed service",
+    body: "EZ TODD is for Texas real property deed matters, including Transfer on Death Deeds and Lady Bird Deeds. EZ Law does not provide legal services in jurisdictions where the firm is not authorized to practice.",
   },
   {
     title: "No guarantee of results",
-    body: "EZ Law performs legal work with reasonable professional skill and care, but no website statement, consultation, estimate, prior result, or review guarantees any particular legal, business, patent, trademark, tax, litigation, or financial outcome.",
+    body: "EZ Law performs legal work with reasonable professional skill and care, but no website statement, consultation, estimate, prior result, or review guarantees any particular legal, probate, tax, title, Medicaid, or financial outcome.",
   },
   {
     title: "Fees and scope",
-    body: "Some matters may be available on a flat-fee basis when the scope is clear. Other matters require hourly, staged, or custom fee arrangements. The signed engagement agreement controls the scope of work, fees, payment terms, and refund terms.",
+    body: "EZ TODD uses flat fees for eligible Texas deed matters. The signed engagement agreement controls the scope of work, fees, payment terms, and refund terms.",
   },
   {
     title: "Third-party services",
@@ -61,8 +61,8 @@ export default function LegalAndDisclaimersPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
               Legal notices
             </p>
-            <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-              Disclaimers and Legal Notices
+              <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
+              EZ TODD Disclaimers and Legal Notices
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
               Important notices about this website, attorney advertising, legal

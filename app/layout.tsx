@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: "Zafrani Law PLLC / EZ Law | Lubbock Patent Attorney and Texas Legal Services",
+    default: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
     template: "%s | EZ Law",
   },
   description: siteConfig.description,
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: "website",
     url: absoluteUrl("/"),
     siteName: siteConfig.name,
-    title: "Zafrani Law PLLC / EZ Law | Lubbock Patent Attorney and Texas Legal Services",
+    title: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
     description: siteConfig.description,
     locale: "en_US",
   },
