@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build --webpack",
-    "build:worker": "opennextjs-cloudflare build && node scripts/patch-opennext-require-shim.mjs",
+    "build": "next build",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },
@@ -18,7 +17,6 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.20.2",
     "@types/node": "22.9.0",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
@@ -27,7 +25,6 @@
     "eslint-config-next": "^16.2.11",
     "postcss": "8.4.49",
     "tailwindcss": "3.4.15",
-    "typescript": "^6.0.3",
-    "wrangler": "^4.113.0"
+    "typescript": "^6.0.3"
   }
 }
