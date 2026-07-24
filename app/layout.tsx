@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -33,7 +34,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-BCGVCMWNWJ" />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-BCGVCMWNWJ');
+          `}
+        </Script>
+      </head>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }
