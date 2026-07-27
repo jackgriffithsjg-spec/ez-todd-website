@@ -61,6 +61,12 @@ type IntakeSubmissionError = {
   detail?: string;
 };
 
+declare global {
+  interface Window {
+    dataLayer?: Array<Record<string, unknown>>;
+  }
+}
+
 const reviewKeysByField: Partial<Record<keyof IntakeState, string[]>> = {
   texasProperty: ["texasProperty:no"],
   mainReason: ["mainReason:medicaid"],
@@ -363,6 +369,10 @@ export function IntakeMockup() {
     }
 
     const data = await response.json();
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "intake_submission_success",
+    });
     window.location.assign(`/intake/confirmation?submissionId=${data.id}`);
   }
 
