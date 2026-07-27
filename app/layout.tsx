@@ -56,6 +56,15 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              gtag('config', 'AW-17871557423/QMTeCIj2uvobEK-m6clC', {
+                'phone_conversion_number': '(806) 777-6249'
+              });
+            `,
+          }}
+        />
       </head>
       <body>
         <noscript>
