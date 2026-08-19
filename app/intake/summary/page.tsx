@@ -11,7 +11,7 @@ import type { DeedType } from "@/components/PricingSummaryCard";
 export const metadata: Metadata = {
   title: "Review Your Intake Summary | EZ TODD by EZ Law",
   description:
-    "Review intake answers and next steps for the EZ TODD Texas deed questionnaire.",
+    "Review intake answers and next steps for the EZ TODD Transfer on Death Deed questionnaire.",
 };
 
 const ownerItems = [

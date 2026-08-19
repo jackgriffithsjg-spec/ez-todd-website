@@ -4,9 +4,9 @@ import { Header } from "@/components/Header";
 import { IntakeMockup } from "@/components/IntakeMockup";
 
 export const metadata: Metadata = {
-  title: "EZ TODD Intake | Texas Deed Questionnaire",
+  title: "EZ TODD Intake | Transfer on Death Deed Questionnaire",
   description:
-    "Submit the EZ TODD Texas deed intake questionnaire for attorney review.",
+    "Submit the EZ TODD Transfer on Death Deed intake questionnaire for attorney review.",
 };
 
 export default function IntakePage() {

@@ -23,8 +23,8 @@ export function getLegalServiceJsonLd() {
     serviceType: [
       "Transfer on Death Deed preparation",
       "Lady Bird Deed preparation",
-      "Texas deed recording",
-      "Texas real estate deed services",
+      "Texas Transfer on Death Deed recording",
+      "Texas Transfer on Death Deed services",
     ],
     url: absoluteUrl("/"),
     provider: {

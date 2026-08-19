@@ -8,7 +8,7 @@ const deedChoices = [
   {
     id: "lady-bird-deed",
     title: "Lady Bird Deed",
-    description: "A flexible Texas deed option that may fit situations involving Medicaid, warranty, or signing needs.",
+    description: "A flexible deed option that may fit situations involving Medicaid, warranty, or signing needs.",
     href: "/start",
   },
   {

@@ -1,7 +1,6 @@
 "use client";
 
 import { type FormEvent, useMemo, useState } from "react";
-import { FieldGroup } from "@/components/FieldGroup";
 import { HelpBar } from "@/components/HelpBar";
 import { IntakeProgress } from "@/components/IntakeProgress";
 import { IntakeStepCard } from "@/components/IntakeStepCard";
@@ -9,51 +8,35 @@ import { InternalMatterTags } from "@/components/InternalMatterTags";
 import { PreliminaryRecommendationCard } from "@/components/PreliminaryRecommendationCard";
 import { siteConfig } from "@/lib/site";
 
-const progressSteps = [
-  "Getting Started",
-  "About You",
-  "Property",
-  "Beneficiaries",
-  "Review",
-  "Next Steps",
-];
+const progressSteps = ["Basics", "Owner", "Property", "Beneficiary", "Review", "Submit"];
 
 type IntakeState = {
   texasProperty: string;
   mainReason: string;
   poaConcern: string;
-  warranty: string;
   nameChanged: string;
   ownerOfRecord: string;
   maritalStatus: string;
-  spouseWillSign: string;
-  divorceOrder: string;
   signingAuthority: string;
   propertyType: string;
   homestead: string;
   legalDescription: string;
 };
 
+type IntakeTextValues = {
+  ownerLegalName: string;
+  ownerMailingAddress: string;
+  ownerPhone: string;
+  ownerEmail: string;
+  propertyCounty: string;
+  propertyAddress: string;
+  primaryBeneficiaryName: string;
+};
+
 type ReviewTrigger = {
   key: string;
   flag: string;
   resetField: keyof IntakeState;
-};
-
-const initialState: IntakeState = {
-  texasProperty: "",
-  mainReason: "",
-  poaConcern: "",
-  warranty: "",
-  nameChanged: "",
-  ownerOfRecord: "",
-  maritalStatus: "",
-  spouseWillSign: "",
-  divorceOrder: "",
-  signingAuthority: "",
-  propertyType: "",
-  homestead: "",
-  legalDescription: "",
 };
 
 type IntakeSubmissionError = {
@@ -67,57 +50,349 @@ declare global {
   }
 }
 
+const initialState: IntakeState = {
+  texasProperty: "",
+  mainReason: "",
+  poaConcern: "",
+  nameChanged: "",
+  ownerOfRecord: "",
+  maritalStatus: "",
+  signingAuthority: "",
+  propertyType: "",
+  homestead: "",
+  legalDescription: "",
+};
+
+const initialTextValues: IntakeTextValues = {
+  ownerLegalName: "",
+  ownerMailingAddress: "",
+  ownerPhone: "",
+  ownerEmail: "",
+  propertyCounty: "",
+  propertyAddress: "",
+  primaryBeneficiaryName: "",
+};
+
 const reviewKeysByField: Partial<Record<keyof IntakeState, string[]>> = {
   texasProperty: ["texasProperty:no"],
   mainReason: ["mainReason:medicaid"],
   ownerOfRecord: ["ownerOfRecord:review"],
-  divorceOrder: ["divorceOrder:yes"],
-  homestead: ["homesteadSpouse:review"],
-  spouseWillSign: ["homesteadSpouse:review"],
   signingAuthority: ["signingAuthority:poa"],
 };
 
-function SelectField({
-  label,
+type ChoiceQuestion = {
+  type: "choice";
+  key: keyof IntakeState;
+  groupIndex: number;
+  eyebrow: string;
+  title: string;
+  helper: string;
+  options: string[];
+};
+
+type TextQuestion = {
+  type: "text";
+  key: keyof IntakeTextValues;
+  groupIndex: number;
+  eyebrow: string;
+  title: string;
+  helper: string;
+  placeholder?: string;
+  inputType?: string;
+  notice?: "sms";
+};
+
+type QuizQuestion = ChoiceQuestion | TextQuestion;
+
+const quizQuestions: QuizQuestion[] = [
+  {
+    type: "choice",
+    key: "texasProperty",
+    groupIndex: 0,
+    eyebrow: "First things first",
+    title: "Is the property located in Texas?",
+    helper: "EZ TODD is built for Texas real property.",
+    options: ["Yes", "No"],
+  },
+  {
+    type: "choice",
+    key: "mainReason",
+    groupIndex: 0,
+    eyebrow: "Your goal",
+    title: "What is the main reason you want this deed?",
+    helper: "No perfect legal wording needed — just pick the closest fit.",
+    options: [
+      "Avoid probate and pass my home to my family",
+      "Plan for Medicaid or long-term care",
+      "Keep control now and decide later",
+      "Not sure",
+    ],
+  },
+  {
+    type: "choice",
+    key: "poaConcern",
+    groupIndex: 0,
+    eyebrow: "Signing",
+    title: "Might someone need to sign for you under a power of attorney?",
+    helper: "This helps the attorney spot whether extra review may be needed.",
+    options: ["Yes", "No", "Not sure"],
+  },
+  {
+    type: "text",
+    key: "ownerLegalName",
+    groupIndex: 1,
+    eyebrow: "About you",
+    title: "What is your full legal name?",
+    helper: "Use the name you use on legal documents.",
+    placeholder: "Jane A. Owner",
+  },
+  {
+    type: "choice",
+    key: "nameChanged",
+    groupIndex: 1,
+    eyebrow: "Name check",
+    title: "Has your name changed since your current deed was recorded?",
+    helper: "For example: marriage, divorce, or a legal name change.",
+    options: ["Yes", "No"],
+  },
+  {
+    type: "text",
+    key: "ownerMailingAddress",
+    groupIndex: 1,
+    eyebrow: "Mailing address",
+    title: "What is your mailing address?",
+    helper: "This can be different from the property address.",
+    placeholder: "Street, city, state, ZIP",
+  },
+  {
+    type: "text",
+    key: "ownerPhone",
+    groupIndex: 1,
+    eyebrow: "Best phone",
+    title: "What phone number should EZ Law use to contact you?",
+    helper: "Call or text updates may be used for this matter.",
+    placeholder: "(806) 777-6249",
+    inputType: "tel",
+    notice: "sms",
+  },
+  {
+    type: "text",
+    key: "ownerEmail",
+    groupIndex: 1,
+    eyebrow: "Best email",
+    title: "What email address should EZ Law use?",
+    helper: "You’ll receive follow-up information here.",
+    placeholder: "you@example.com",
+    inputType: "email",
+  },
+  {
+    type: "choice",
+    key: "ownerOfRecord",
+    groupIndex: 1,
+    eyebrow: "Ownership",
+    title: "Are you the current owner shown on the deed or county records?",
+    helper: "If you are unsure, that is okay — the attorney can review it.",
+    options: ["Yes", "No", "Not sure"],
+  },
+  {
+    type: "choice",
+    key: "maritalStatus",
+    groupIndex: 1,
+    eyebrow: "Marital status",
+    title: "What is your marital status?",
+    helper: "This can matter for Texas homestead and signing rules.",
+    options: ["Married", "Divorced", "Widowed", "Separated", "Single"],
+  },
+  {
+    type: "choice",
+    key: "signingAuthority",
+    groupIndex: 1,
+    eyebrow: "Who signs",
+    title: "Who will sign the deed?",
+    helper: "Most people sign for themselves. Choose power of attorney if someone else will sign for you.",
+    options: ["Myself", "Someone under a power of attorney"],
+  },
+  {
+    type: "text",
+    key: "propertyCounty",
+    groupIndex: 2,
+    eyebrow: "Property",
+    title: "What Texas county is the property in?",
+    helper: "The county is used for review and recording.",
+    placeholder: "Lubbock County",
+  },
+  {
+    type: "text",
+    key: "propertyAddress",
+    groupIndex: 2,
+    eyebrow: "Property address",
+    title: "What is the property street address?",
+    helper: "If it is land without a street address, enter the best description you have.",
+    placeholder: "123 Main Street",
+  },
+  {
+    type: "choice",
+    key: "propertyType",
+    groupIndex: 2,
+    eyebrow: "Property type",
+    title: "What kind of property is it?",
+    helper: "Pick the closest match.",
+    options: [
+      "Single-family home",
+      "Condominium",
+      "Townhome",
+      "Vacant land",
+      "Rural or agricultural land",
+      "Rental property",
+      "Commercial",
+      "Mineral interest",
+      "Other",
+    ],
+  },
+  {
+    type: "choice",
+    key: "homestead",
+    groupIndex: 2,
+    eyebrow: "Homestead",
+    title: "Is this your homestead?",
+    helper: "In plain English: is this your primary residence?",
+    options: ["Yes", "No"],
+  },
+  {
+    type: "choice",
+    key: "legalDescription",
+    groupIndex: 2,
+    eyebrow: "Legal description",
+    title: "Do you have the property’s legal description?",
+    helper: "It is okay if you do not. EZ Law can follow up if it is needed.",
+    options: ["Yes", "No", "Not sure"],
+  },
+  {
+    type: "text",
+    key: "primaryBeneficiaryName",
+    groupIndex: 3,
+    eyebrow: "Beneficiary",
+    title: "Who should receive the property?",
+    helper: "Enter the full legal name of the primary beneficiary or organization.",
+    placeholder: "Full legal name or organization",
+  },
+];
+
+const fieldLabels: Record<keyof IntakeState | keyof IntakeTextValues, string> = {
+  texasProperty: "whether the property is in Texas",
+  mainReason: "your main reason",
+  poaConcern: "whether power of attorney may be needed",
+  nameChanged: "whether your name has changed",
+  ownerOfRecord: "whether you are the owner of record",
+  maritalStatus: "marital status",
+  signingAuthority: "who will sign the deed",
+  propertyType: "property type",
+  homestead: "whether this is your homestead",
+  legalDescription: "whether you have the legal description",
+  ownerLegalName: "full legal name",
+  ownerMailingAddress: "mailing address",
+  ownerPhone: "phone number",
+  ownerEmail: "email address",
+  propertyCounty: "property county",
+  propertyAddress: "property address",
+  primaryBeneficiaryName: "primary beneficiary name",
+};
+
+function ChoiceField({
+  question,
   value,
   onChange,
-  options,
-  required = false,
 }: {
-  label: string;
+  question: ChoiceQuestion;
   value: string;
   onChange: (value: string) => void;
-  options: string[];
-  required?: boolean;
 }) {
   return (
-    <label className="block">
-      <span className="text-sm font-semibold text-white">
-        {label}
-        {required ? <span className="text-white/45"> *</span> : null}
-      </span>
-      <select
+    <div className="grid gap-3">
+      {question.options.map((option) => {
+        const isSelected = value === option;
+        return (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onChange(option)}
+            className={`rounded-2xl border p-4 text-left text-sm font-semibold transition hover:-translate-y-0.5 hover:border-white/55 ${
+              isSelected
+                ? "border-white bg-white text-black shadow-xl shadow-white/10"
+                : "border-white/10 bg-black text-white hover:bg-white/[0.06]"
+            }`}
+          >
+            <span className="flex items-center justify-between gap-4">
+              <span>{option}</span>
+              <span
+                className={`grid size-6 place-items-center rounded-full border text-xs ${
+                  isSelected ? "border-black bg-black text-white" : "border-white/20 text-white/45"
+                }`}
+              >
+                {isSelected ? "✓" : ""}
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function TextField({
+  question,
+  value,
+  onChange,
+}: {
+  question: TextQuestion;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div>
+      <input
+        name={question.key}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        required={required}
-        className="mt-2 w-full rounded-md border border-white/10 bg-black px-3 py-3 text-sm text-white outline-none focus:border-white/45"
-      >
-        <option value="">Select one</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
+        className="w-full rounded-2xl border border-white/10 bg-black px-4 py-4 text-base text-white outline-none transition placeholder:text-white/25 focus:border-white/55"
+        type={question.inputType ?? "text"}
+        placeholder={question.placeholder}
+        required
+      />
+      {question.notice === "sms" ? (
+        <p className="mt-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-xs leading-5 text-white/55">
+          By providing your mobile number, you agree to receive text messages from
+          Zafrani Law PLLC (EZ Law) regarding services or updates. Message frequency
+          may vary. Message and data rates may apply. Reply STOP to opt out, HELP
+          for assistance. See our{" "}
+          <a href={siteConfig.privacyPolicyUrl} className="text-white underline underline-offset-4">
+            Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a href={siteConfig.termsOfUseUrl} className="text-white underline underline-offset-4">
+            Terms of Use
+          </a>
+          .
+        </p>
+      ) : null}
+    </div>
   );
 }
 
 export function IntakeMockup() {
   const [answers, setAnswers] = useState<IntakeState>(initialState);
+  const [textValues, setTextValues] = useState<IntakeTextValues>(initialTextValues);
   const [confirmedReviewAnswers, setConfirmedReviewAnswers] = useState<Record<string, boolean>>({});
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState(0);
+
+  const reviewScreenIndex = quizQuestions.length;
+  const submitScreenIndex = quizQuestions.length + 1;
+  const totalScreens = quizQuestions.length + 2;
+  const activeQuestion = currentScreen < quizQuestions.length ? quizQuestions[currentScreen] : null;
+  const currentGroupIndex = activeQuestion?.groupIndex ?? (currentScreen === reviewScreenIndex ? 4 : 5);
+  const progressPercent = Math.round(((currentScreen + 1) / totalScreens) * 100);
 
   const setAnswer = (key: keyof IntakeState, value: string) => {
     setSubmitError("");
@@ -132,6 +407,16 @@ export function IntakeMockup() {
       });
     }
     setAnswers((current) => ({ ...current, [key]: value }));
+  };
+
+  const setTextValue = (key: keyof IntakeTextValues, value: string) => {
+    setSubmitError("");
+    setTextValues((current) => ({ ...current, [key]: value }));
+  };
+
+  const getFieldValue = (key: keyof IntakeState | keyof IntakeTextValues) => {
+    if (key in answers) return answers[key as keyof IntakeState];
+    return textValues[key as keyof IntakeTextValues];
   };
 
   const tier1ReviewTriggers = useMemo(() => {
@@ -155,20 +440,6 @@ export function IntakeMockup() {
         key: "ownerOfRecord:review",
         flag: "Owner of record needs review",
         resetField: "ownerOfRecord",
-      });
-    }
-    if (answers.divorceOrder === "Yes") {
-      triggers.push({
-        key: "divorceOrder:yes",
-        flag: "Divorce decree or court order involves the property",
-        resetField: "divorceOrder",
-      });
-    }
-    if (answers.homestead === "Yes" && (answers.spouseWillSign === "No" || answers.spouseWillSign === "Not sure")) {
-      triggers.push({
-        key: "homesteadSpouse:review",
-        flag: "Homestead spouse signature issue",
-        resetField: "spouseWillSign",
       });
     }
     if (answers.signingAuthority === "Someone under a power of attorney") {
@@ -207,7 +478,6 @@ export function IntakeMockup() {
     if (
       answers.poaConcern === "Yes" ||
       answers.poaConcern === "Not sure" ||
-      answers.warranty === "Yes" ||
       answers.mainReason === "Keep control now and decide later"
     ) {
       return "Lady Bird Deed" as const;
@@ -224,64 +494,9 @@ export function IntakeMockup() {
           ? "Tier 1: Ownership not confirmed"
           : flag === "Property is not located in Texas"
             ? "Tier 1: Non-Texas property"
-            : flag === "Divorce decree or court order involves the property"
-              ? "Tier 1: Divorce decree or court order issue"
-              : flag === "Homestead spouse signature issue"
-                ? "Tier 1: Homestead spouse signature issue"
-                : "Tier 1: Power of attorney signing issue",
+            : "Tier 1: Power of attorney signing issue",
     description: flag,
   }));
-
-  function confirmReviewAnswer(key: string) {
-    setSubmitError("");
-    setConfirmedReviewAnswers((current) => ({ ...current, [key]: true }));
-  }
-
-  function changeReviewAnswer(trigger: ReviewTrigger) {
-    setConfirmedReviewAnswers((current) => {
-      const next = { ...current };
-      delete next[trigger.key];
-      return next;
-    });
-    setAnswer(trigger.resetField, "");
-  }
-
-  function reviewConfirmation(key: string) {
-    const trigger = tier1ReviewTriggers.find((item) => item.key === key);
-    if (!trigger) return null;
-
-    if (confirmedReviewAnswers[key]) {
-      return (
-        <p className="mt-2 rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-xs leading-5 text-white/50">
-          Attorney review acknowledged for this answer.
-        </p>
-      );
-    }
-
-    return (
-      <div className="mt-2 rounded-md border border-amber-300/30 bg-amber-400/10 p-3">
-        <p className="text-sm leading-6 text-amber-50">
-          That answer may require attorney review. Did you mean to choose it?
-        </p>
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <button
-            type="button"
-            onClick={() => confirmReviewAnswer(key)}
-            className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-black"
-          >
-            Yes, continue
-          </button>
-          <button
-            type="button"
-            onClick={() => changeReviewAnswer(trigger)}
-            className="rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-white"
-          >
-            Change answer
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   const tier2SubmissionFlags = tier2Tags.map((tag) => ({
     tier: "Tier 2",
@@ -300,18 +515,126 @@ export function IntakeMockup() {
     description: tag,
   }));
 
+  function confirmReviewAnswer(key: string) {
+    setSubmitError("");
+    setConfirmedReviewAnswers((current) => ({ ...current, [key]: true }));
+  }
+
+  function changeReviewAnswer(trigger: ReviewTrigger) {
+    const questionIndex = quizQuestions.findIndex(
+      (question) => question.type === "choice" && question.key === trigger.resetField,
+    );
+    setConfirmedReviewAnswers((current) => {
+      const next = { ...current };
+      delete next[trigger.key];
+      return next;
+    });
+    setAnswer(trigger.resetField, "");
+    if (questionIndex >= 0) setCurrentScreen(questionIndex);
+  }
+
+  function reviewConfirmation(key: string) {
+    const trigger = tier1ReviewTriggers.find((item) => item.key === key);
+    if (!trigger) return null;
+
+    if (confirmedReviewAnswers[key]) {
+      return (
+        <p className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm leading-6 text-white/55">
+          Got it — EZ Law will review this answer.
+        </p>
+      );
+    }
+
+    return (
+      <div className="mt-4 rounded-2xl border border-amber-300/30 bg-amber-400/10 p-4">
+        <p className="text-sm leading-6 text-amber-50">
+          Quick check: this answer may need attorney review. Did you mean to choose it?
+        </p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => confirmReviewAnswer(key)}
+            className="rounded-xl bg-white px-4 py-3 text-sm font-semibold text-black"
+          >
+            Yes, continue
+          </button>
+          <button
+            type="button"
+            onClick={() => changeReviewAnswer(trigger)}
+            className="rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-white"
+          >
+            Change answer
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const activeValue = activeQuestion ? getFieldValue(activeQuestion.key) : "";
+
+  function validateCurrentScreen() {
+    if (!activeQuestion) return true;
+
+    if (!activeValue.trim()) {
+      setSubmitError(`Please complete ${fieldLabels[activeQuestion.key]} before continuing.`);
+      return false;
+    }
+
+    if (activeQuestion.type === "choice") {
+      const hasUnconfirmedReviewAnswer = (reviewKeysByField[activeQuestion.key] || []).some((key) =>
+        unconfirmedReviewTriggers.some((trigger) => trigger.key === key),
+      );
+
+      if (hasUnconfirmedReviewAnswer) {
+        setSubmitError("Please confirm or change this answer before continuing.");
+        return false;
+      }
+    }
+
+    setSubmitError("");
+    return true;
+  }
+
+  function validateAllRequiredFields() {
+    const firstIncompleteQuestionIndex = quizQuestions.findIndex((question) => !getFieldValue(question.key).trim());
+    if (firstIncompleteQuestionIndex >= 0) {
+      const question = quizQuestions[firstIncompleteQuestionIndex];
+      setCurrentScreen(firstIncompleteQuestionIndex);
+      setSubmitError(`Please complete ${fieldLabels[question.key]} before submitting.`);
+      return false;
+    }
+
+    if (unconfirmedReviewTriggers.length > 0) {
+      const firstTrigger = unconfirmedReviewTriggers[0];
+      const questionIndex = quizQuestions.findIndex(
+        (question) => question.type === "choice" && question.key === firstTrigger.resetField,
+      );
+      if (questionIndex >= 0) setCurrentScreen(questionIndex);
+      setSubmitError("Please confirm or change each answer that may require attorney review before submitting.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function goToNextScreen() {
+    if (!validateCurrentScreen()) return;
+    setCurrentScreen((screen) => Math.min(screen + 1, submitScreenIndex));
+  }
+
+  function goToPreviousScreen() {
+    setSubmitError("");
+    setCurrentScreen((screen) => Math.max(screen - 1, 0));
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitError("");
 
-    if (unconfirmedReviewTriggers.length > 0) {
-      setSubmitError("Please confirm or change each answer that may require attorney review before continuing.");
-      return;
-    }
+    if (!validateAllRequiredFields()) return;
 
     setIsSubmitting(true);
 
-    const formData = new FormData(event.currentTarget);
     const legalDescriptionAddon =
       answers.legalDescription === "No" || answers.legalDescription === "Not sure";
 
@@ -322,15 +645,15 @@ export function IntakeMockup() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ownerLegalName: formData.get("ownerLegalName"),
+          ownerLegalName: textValues.ownerLegalName,
           ownerPriorName: answers.nameChanged === "Yes" ? "[owner_prior_name]" : null,
-          ownerMailingAddress: formData.get("ownerMailingAddress"),
-          ownerPhone: formData.get("ownerPhone"),
-          ownerEmail: formData.get("ownerEmail"),
+          ownerMailingAddress: textValues.ownerMailingAddress,
+          ownerPhone: textValues.ownerPhone,
+          ownerEmail: textValues.ownerEmail,
           ownerMaritalStatus: answers.maritalStatus,
           spouseLegalName: answers.maritalStatus === "Married" ? "[spouse_legal_name]" : null,
-          propertyCounty: formData.get("propertyCounty"),
-          propertyAddress: formData.get("propertyAddress"),
+          propertyCounty: textValues.propertyCounty,
+          propertyAddress: textValues.propertyAddress,
           propertyType: answers.propertyType,
           isHomestead: answers.homestead,
           legalDescriptionStatus: answers.legalDescription,
@@ -338,14 +661,14 @@ export function IntakeMockup() {
           recommendation,
           recommendationReason:
             recommendation === "Lady Bird Deed"
-              ? "Preliminary guidance selected Lady Bird Deed based on flexibility, warranty, or power-of-attorney answers."
+              ? "Preliminary guidance selected Lady Bird Deed based on flexibility or power-of-attorney answers."
               : "Preliminary guidance selected Transfer on Death Deed based on probate-avoidance answers.",
           legalDescriptionAddon,
           flags: [...tier1SubmissionFlags, ...tier2SubmissionFlags],
-          primaryBeneficiaryName: formData.get("primaryBeneficiaryName"),
-          primaryBeneficiaryRelationship: formData.get("primaryBeneficiaryRelationship"),
-          primaryBeneficiaryAddress: formData.get("primaryBeneficiaryAddress"),
-          alternateBeneficiaryName: formData.get("alternateBeneficiaryName"),
+          primaryBeneficiaryName: textValues.primaryBeneficiaryName,
+          primaryBeneficiaryRelationship: null,
+          primaryBeneficiaryAddress: null,
+          alternateBeneficiaryName: null,
         }),
       });
     } catch (error) {
@@ -378,146 +701,126 @@ export function IntakeMockup() {
 
   return (
     <>
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
+      <section className="px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/40">
-            Secure intake
+            Guided intake
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-            Texas Deed Questionnaire
+          <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-normal sm:text-6xl">
+            Transfer on Death Deed Questionnaire
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-white/60">
-            Answer a few questions so EZ Law can review your Texas property, your
-            goals, and the deed path that may fit. No payment is collected here.
+          <p className="mt-5 max-w-2xl text-base leading-8 text-white/60">
+            One question at a time. No payment here. EZ Law reviews your answers before moving forward.
           </p>
           <div className="mt-8 grid gap-4">
-            <IntakeProgress steps={progressSteps} currentStep={0} />
+            <IntakeProgress
+              steps={progressSteps}
+              currentStep={currentGroupIndex}
+              progressPercent={progressPercent}
+              statusLabel={
+                activeQuestion
+                  ? `Question ${currentScreen + 1} of ${quizQuestions.length}`
+                  : currentScreen === reviewScreenIndex
+                    ? "Review your answers"
+                    : "Ready to submit"
+              }
+            />
             <HelpBar showStartOver />
           </div>
         </div>
       </section>
 
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-6xl gap-6">
-            <form className="grid gap-6" onSubmit={handleSubmit}>
-              <IntakeStepCard eyebrow="Step 1" title="Getting Started">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div>
-                    <SelectField label="Is the property located in Texas?" value={answers.texasProperty} onChange={(value) => setAnswer("texasProperty", value)} options={["Yes", "No"]} required />
-                    {reviewConfirmation("texasProperty:no")}
-                  </div>
-                  <div>
-                    <SelectField label="What is your main reason for doing this?" value={answers.mainReason} onChange={(value) => setAnswer("mainReason", value)} options={["Avoid probate and pass my home to my family", "Plan for Medicaid or long-term care", "Keep control now and decide later", "Not sure"]} required />
-                    {reviewConfirmation("mainReason:medicaid")}
-                  </div>
-                  <SelectField label="Might you need someone to sign for you under a power of attorney, now or later?" value={answers.poaConcern} onChange={(value) => setAnswer("poaConcern", value)} options={["Yes", "No", "Not sure"]} required />
-                  <SelectField label="Do you want your deed to include a warranty of title?" value={answers.warranty} onChange={(value) => setAnswer("warranty", value)} options={["Yes", "No", "Not sure"]} />
-                </div>
+        <div className="mx-auto max-w-4xl">
+          <form className="grid gap-6" onSubmit={handleSubmit}>
+            {activeQuestion ? (
+              <IntakeStepCard eyebrow={activeQuestion.eyebrow} title={activeQuestion.title}>
+                <p className="text-base leading-7 text-white/60">{activeQuestion.helper}</p>
+                {activeQuestion.type === "choice" ? (
+                  <>
+                    <ChoiceField
+                      question={activeQuestion}
+                      value={answers[activeQuestion.key]}
+                      onChange={(value) => setAnswer(activeQuestion.key, value)}
+                    />
+                    {(reviewKeysByField[activeQuestion.key] || []).map((key) => (
+                      <div key={key}>{reviewConfirmation(key)}</div>
+                    ))}
+                  </>
+                ) : (
+                  <TextField
+                    question={activeQuestion}
+                    value={textValues[activeQuestion.key]}
+                    onChange={(value) => setTextValue(activeQuestion.key, value)}
+                  />
+                )}
               </IntakeStepCard>
+            ) : null}
 
-              <IntakeStepCard eyebrow="Step 2" title="About You">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup name="ownerLegalName" label="Full legal name" placeholder="Jane A. Owner" required />
-                  <SelectField label="Has your name changed since your current deed was recorded?" value={answers.nameChanged} onChange={(value) => setAnswer("nameChanged", value)} options={["Yes", "No"]} required />
-                  <FieldGroup name="ownerMailingAddress" label="Mailing address" placeholder="Street, city, state, ZIP" required />
-                  <div>
-                    <FieldGroup name="ownerPhone" label="Phone number" type="tel" placeholder="(806) 777-6249" required />
-                    <p className="mt-2 rounded-md border border-white/10 bg-white/[0.03] p-3 text-xs leading-5 text-white/50">
-                      By providing your mobile number, you agree to receive text
-                      messages from Zafrani Law PLLC (EZ Law) regarding services or
-                      updates. Message frequency may vary. Message and data rates may
-                      apply. Reply STOP to opt out, HELP for assistance. See our{" "}
-                      <a href={siteConfig.privacyPolicyUrl} className="text-white underline underline-offset-4">
-                        Privacy Policy
-                      </a>{" "}
-                      and{" "}
-                      <a href={siteConfig.termsOfUseUrl} className="text-white underline underline-offset-4">
-                        Terms of Use
-                      </a>
-                      .
-                    </p>
-                  </div>
-                  <FieldGroup name="ownerEmail" label="Email address" type="email" placeholder="you@example.com" required />
-                  <div>
-                    <SelectField label="Are you the current owner shown on the deed or county records?" value={answers.ownerOfRecord} onChange={(value) => setAnswer("ownerOfRecord", value)} options={["Yes", "No", "Not sure"]} required />
-                    {reviewConfirmation("ownerOfRecord:review")}
-                  </div>
-                  <SelectField label="Marital status" value={answers.maritalStatus} onChange={(value) => setAnswer("maritalStatus", value)} options={["Married", "Divorced", "Widowed", "Separated", "Single"]} required />
-                  <div>
-                    <SelectField label="Will your spouse sign the deed if needed?" value={answers.spouseWillSign} onChange={(value) => setAnswer("spouseWillSign", value)} options={["Yes", "No", "Not sure"]} />
-                    {reviewConfirmation("homesteadSpouse:review")}
-                  </div>
-                  <div>
-                    <SelectField label="Does a divorce decree or court order involve this property?" value={answers.divorceOrder} onChange={(value) => setAnswer("divorceOrder", value)} options={["Yes", "No"]} />
-                    {reviewConfirmation("divorceOrder:yes")}
-                  </div>
-                  <div>
-                    <SelectField label="Will you sign the deed yourself, or will someone sign for you under a power of attorney?" value={answers.signingAuthority} onChange={(value) => setAnswer("signingAuthority", value)} options={["Myself", "Someone under a power of attorney"]} required />
-                    {reviewConfirmation("signingAuthority:poa")}
-                  </div>
-                </div>
-              </IntakeStepCard>
-
-              <IntakeStepCard eyebrow="Step 3" title="Property">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup name="propertyCounty" label="County where the property is located" placeholder="County, Texas" required />
-                  <FieldGroup name="propertyAddress" label="Property street address" placeholder="Property address" required />
-                  <SelectField label="Property type" value={answers.propertyType} onChange={(value) => setAnswer("propertyType", value)} options={["Single-family home", "Condominium", "Townhome", "Vacant land", "Rural or agricultural land", "Rental property", "Commercial", "Mineral interest", "Other"]} required />
-                  <SelectField label="Is this your homestead?" value={answers.homestead} onChange={(value) => setAnswer("homestead", value)} options={["Yes", "No"]} required />
-                  <SelectField label="Do you have your property's legal description?" value={answers.legalDescription} onChange={(value) => setAnswer("legalDescription", value)} options={["Yes", "No", "Not sure"]} required />
-                  <FieldGroup label="Current deed" type="file" />
-                </div>
-              </IntakeStepCard>
-
-              <IntakeStepCard eyebrow="Step 4" title="Beneficiaries">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <FieldGroup name="primaryBeneficiaryName" label="Primary beneficiary name" placeholder="Full legal name or organization" required />
-                  <FieldGroup name="primaryBeneficiaryRelationship" label="Relationship to you" placeholder="Child, spouse, trust, charity, etc." />
-                  <FieldGroup name="primaryBeneficiaryAddress" label="Beneficiary mailing address" placeholder="Street, city, state, ZIP" />
-                  <FieldGroup label="Additional beneficiary" placeholder="Additional beneficiary" />
-                  <FieldGroup name="alternateBeneficiaryName" label="Alternate beneficiary" placeholder="Backup beneficiary" />
-                </div>
-              </IntakeStepCard>
-
-              <IntakeStepCard eyebrow="Step 5" title="Review">
-                <div className="rounded-md border border-white/10 bg-black p-5">
-                  <h3 className="text-lg font-semibold">Preliminary review of answers</h3>
-                  <dl className="mt-4 grid gap-3 text-sm text-white/60 sm:grid-cols-2">
-                    <div><dt className="font-semibold text-white">Property</dt><dd>{answers.texasProperty || "Texas real property"} in [county]</dd></div>
-                    <div><dt className="font-semibold text-white">Goal</dt><dd>{answers.mainReason || "Avoid probate / attorney review needed"}</dd></div>
-                    <div><dt className="font-semibold text-white">Owner</dt><dd>[Client full legal name]</dd></div>
-                    <div><dt className="font-semibold text-white">Beneficiary</dt><dd>[Primary beneficiary]</dd></div>
-                  </dl>
+            {currentScreen === reviewScreenIndex ? (
+              <IntakeStepCard eyebrow="Almost there" title="Review your answers">
+                <p className="text-base leading-7 text-white/60">
+                  Give this a quick look. If anything feels off, go back and change it.
+                </p>
+                <div className="grid gap-3 rounded-2xl border border-white/10 bg-black p-5 text-sm text-white/60 sm:grid-cols-2">
+                  <div><p className="font-semibold text-white">Owner</p><p>{textValues.ownerLegalName || "Not provided"}</p></div>
+                  <div><p className="font-semibold text-white">Contact</p><p>{textValues.ownerEmail || "Not provided"} · {textValues.ownerPhone || "Not provided"}</p></div>
+                  <div><p className="font-semibold text-white">Property</p><p>{textValues.propertyAddress || "Not provided"}, {textValues.propertyCounty || "Not provided"}</p></div>
+                  <div><p className="font-semibold text-white">Goal</p><p>{answers.mainReason || "Not provided"}</p></div>
+                  <div><p className="font-semibold text-white">Beneficiary</p><p>{textValues.primaryBeneficiaryName || "Not provided"}</p></div>
+                  <div><p className="font-semibold text-white">Preliminary path</p><p>{recommendation}</p></div>
                 </div>
                 <InternalMatterTags tags={tier2Tags} />
                 <PreliminaryRecommendationCard recommendation={recommendation} hasReviewTags={tier2Tags.length > 0} />
               </IntakeStepCard>
+            ) : null}
 
-              <IntakeStepCard eyebrow="Step 6" title="Next Steps">
-                <p className="text-sm leading-6 text-white/60">
-                  After you submit the questionnaire, EZ Law reviews your information
-                  before accepting the matter, confirming the deed path, or requesting
-                  payment. The firm will follow up if more details are needed.
+            {currentScreen === submitScreenIndex ? (
+              <IntakeStepCard eyebrow="Final step" title="Send it to EZ Law">
+                <p className="text-base leading-7 text-white/60">
+                  After you submit, EZ Law reviews your information before accepting the matter,
+                  confirming the deed path, or requesting payment.
                 </p>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="rounded-md bg-white px-6 py-3 text-center text-sm font-semibold text-black disabled:cursor-not-allowed disabled:bg-white/50"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit Intake"}
-                  </button>
-                  <a href="/start" className="rounded-md border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white">
-                    Back to Start
-                  </a>
-                </div>
-                {submitError ? (
-                  <p className="rounded-md border border-red-300/30 bg-red-500/10 p-3 text-sm leading-6 text-red-100">
-                    {submitError}
-                  </p>
-                ) : null}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full rounded-2xl bg-white px-6 py-4 text-center text-sm font-black uppercase tracking-[0.18em] text-black transition hover:bg-white/85 disabled:cursor-not-allowed disabled:bg-white/50 sm:w-auto"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Intake"}
+                </button>
               </IntakeStepCard>
-            </form>
+            ) : null}
+
+            {submitError ? (
+              <p className="rounded-2xl border border-red-300/30 bg-red-500/10 p-4 text-sm leading-6 text-red-100">
+                {submitError}
+              </p>
+            ) : null}
+
+            <div className="flex flex-col justify-between gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={goToPreviousScreen}
+                disabled={currentScreen === 0 || isSubmitting}
+                className="rounded-2xl border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Back
+              </button>
+              {currentScreen < submitScreenIndex ? (
+                <button
+                  type="button"
+                  onClick={goToNextScreen}
+                  className="rounded-2xl bg-white px-6 py-3 text-center text-sm font-semibold text-black transition hover:bg-white/85"
+                >
+                  {currentScreen === reviewScreenIndex ? "Looks good" : "Continue"}
+                </button>
+              ) : (
+                <a href="/start" className="rounded-2xl border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10">
+                  Back to Start
+                </a>
+              )}
+            </div>
+          </form>
         </div>
       </section>
     </>

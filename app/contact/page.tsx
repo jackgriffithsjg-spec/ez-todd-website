@@ -24,7 +24,7 @@ export default function ContactPage() {
                 Contact
               </p>
               <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-                Contact EZ TODD about a Texas deed.
+                Contact EZ TODD about a Texas Transfer on Death Deed.
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
                 Reach out about a Texas Transfer on Death Deed or Lady Bird Deed.

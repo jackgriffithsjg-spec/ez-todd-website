@@ -4,9 +4,9 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Start Your Texas Deed Review | EZ TODD by EZ Law",
+  title: "Start Your Transfer on Death Deed Review | EZ TODD by EZ Law",
   description:
-    "Start the EZ TODD Texas deed review and see what information to have ready before the questionnaire.",
+    "Start the EZ TODD Transfer on Death Deed review and see what information to have ready before the questionnaire.",
 };
 
 const checklist = [
@@ -32,7 +32,7 @@ export default function StartPage() {
               Start
             </p>
             <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-              Start Your Texas Deed Review
+              Start Your Transfer on Death Deed Review
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
               The questionnaire helps EZ Law understand your property, your goals,

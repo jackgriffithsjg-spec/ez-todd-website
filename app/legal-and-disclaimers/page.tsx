@@ -26,7 +26,7 @@ const notices = [
     body: "Using this website, reading materials, submitting a message, calling, texting, or emailing does not create an attorney-client relationship. Representation begins only after EZ Law accepts the matter and an engagement agreement is signed. Do not send confidential or sensitive information before that happens.",
   },
   {
-    title: "Texas deed service",
+    title: "Texas Transfer on Death Deed service",
     body: "EZ TODD is for Texas real property deed matters, including Transfer on Death Deeds and Lady Bird Deeds. EZ Law does not provide legal services in jurisdictions where the firm is not authorized to practice.",
   },
   {
@@ -35,7 +35,7 @@ const notices = [
   },
   {
     title: "Fees and scope",
-    body: "EZ TODD uses flat fees for eligible Texas deed matters. The signed engagement agreement controls the scope of work, fees, payment terms, and refund terms.",
+    body: "EZ TODD uses flat fees for eligible Texas Transfer on Death Deed matters. The signed engagement agreement controls the scope of work, fees, payment terms, and refund terms.",
   },
   {
     title: "Third-party services",

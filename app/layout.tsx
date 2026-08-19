@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
+    default: "EZ TODD by EZ Law | Texas Transfer on Death Deed",
     template: "%s | EZ Law",
   },
   description: siteConfig.description,
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: "website",
     url: absoluteUrl("/"),
     siteName: siteConfig.name,
-    title: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
+    title: "EZ TODD by EZ Law | Texas Transfer on Death Deed",
     description: siteConfig.description,
     locale: "en_US",
   },

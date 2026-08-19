@@ -8,21 +8,18 @@ export function Hero() {
           <img
             src="/brand/ez-law-logo-full-white-v2.png"
             alt="EZ Law"
-            className="mb-5 block h-auto w-52 object-contain sm:w-64"
+            className="mb-6 block h-auto w-52 object-contain sm:w-64"
             width="2000"
             height="1600"
           />
           <p className="text-5xl font-semibold tracking-normal sm:text-6xl">EZ TODD</p>
-          <p className="mt-2 text-sm font-medium uppercase tracking-[0.24em] text-white/55">
-            by EZ Law
-          </p>
         </div>
 
         <p className="mb-4 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/75">
           Reviewed by a licensed Texas attorney
         </p>
         <h1 className="max-w-4xl text-4xl font-semibold tracking-normal text-white sm:text-6xl">
-          Attorney-prepared Texas deeds. Statewide. Flat fee.
+          Attorney-prepared Texas Transfer on Death Deed. Statewide. Flat fee.
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
           The easy way to order a Texas Transfer on Death Deed or Lady Bird deed

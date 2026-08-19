@@ -24,22 +24,27 @@ export function Footer() {
             />
             <span className="text-lg font-semibold">EZ TODD by EZ Law</span>
           </div>
-          <p className="max-w-3xl text-sm leading-6 text-white/55">
-            {siteConfig.legalName}, doing business as EZ Law. Principal office:
-            Lubbock, Texas. Responsible attorney: {siteConfig.responsibleAttorney}.
-            Phone {siteConfig.phoneDisplay}. Email {siteConfig.email}. This website is
-            attorney advertising and provides general information only. It is not
-            legal advice, and using this site, reading our answers, or contacting us
-            does not create an attorney-client relationship. An attorney-client
-            relationship begins only when you sign our engagement agreement and we
-            accept your matter. We prepare deeds for Texas real property only. A
-            Transfer on Death Deed or Lady Bird deed is not a will or a complete
-            estate plan. Results depend on your specific facts, and we do not
-            guarantee any particular legal or tax outcome.{" "}
-            <a href="/legal-and-disclaimers" className="text-white underline underline-offset-4">
-              See our full Disclaimers and Legal Notices.
-            </a>
-          </p>
+          <div className="max-w-3xl rounded-md border border-white/20 bg-white/[0.06] p-5">
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-white">
+              Attorney Advertising / Legal Notice
+            </p>
+            <p className="mt-4 text-base leading-8 text-white/85">
+              {siteConfig.legalName}, doing business as EZ Law. Principal office:
+              Lubbock, Texas. Responsible attorney: {siteConfig.responsibleAttorney}.
+              Phone {siteConfig.phoneDisplay}. Email {siteConfig.email}. This website is
+              attorney advertising and provides general information only. It is not
+              legal advice, and using this site, reading our answers, or contacting us
+              does not create an attorney-client relationship. An attorney-client
+              relationship begins only when you sign our engagement agreement and we
+              accept your matter. We prepare deeds for Texas real property only. A
+              Transfer on Death Deed or Lady Bird deed is not a will or a complete
+              estate plan. Results depend on your specific facts, and we do not
+              guarantee any particular legal or tax outcome.{" "}
+              <a href="/legal-and-disclaimers" className="font-semibold text-white underline underline-offset-4">
+                See our full Disclaimers and Legal Notices.
+              </a>
+            </p>
+          </div>
         </div>
 
         <nav className="flex flex-wrap gap-x-5 gap-y-3 md:justify-end" aria-label="Footer navigation">

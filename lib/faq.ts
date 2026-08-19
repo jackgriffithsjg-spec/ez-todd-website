@@ -35,7 +35,7 @@ export const faqSections: FaqSection[] = [
       {
         question: "What is a Lady Bird Deed?",
         answer:
-          "A Lady Bird Deed is a Texas deed option that can transfer property at death while reserving broad rights for the current owner during life. It may be useful in situations where a standard Transfer on Death Deed is not the best fit.",
+          "A Lady Bird Deed is an option that can transfer Texas property at death while reserving broad rights for the current owner during life. It may be useful in situations where a standard Transfer on Death Deed is not the best fit.",
       },
       {
         question: "Which deed do I need?",

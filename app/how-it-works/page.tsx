@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { ProcessSteps } from "@/components/ProcessSteps";
 
 export const metadata: Metadata = {
-  title: "How EZ TODD Works | Three-Step Texas Deed Process",
+  title: "How EZ TODD Works | Texas Transfer on Death Deed Process",
   description:
     "Learn the three-step EZ TODD process for attorney-prepared Texas Transfer on Death Deeds and Lady Bird Deeds.",
 };
@@ -39,7 +39,7 @@ export default function HowItWorksPage() {
               How it works
             </p>
             <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-normal sm:text-6xl">
-              Three steps from questions to recorded deed.
+              Three steps from questions to recorded Transfer on Death Deed.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
               EZ TODD is built to keep the path simple: answer the questions, confirm

@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 export const metadata: Metadata = {
   title: "Intake Submitted | EZ TODD by EZ Law",
   description:
-    "Confirmation that your Texas deed intake has been submitted to EZ Law for attorney review.",
+    "Confirmation that your Transfer on Death Deed intake has been submitted to EZ Law for attorney review.",
 };
 
 type ConfirmationPageProps = {

@@ -11,7 +11,7 @@ import { getLegalServiceJsonLd, getWebsiteJsonLd } from "@/lib/schema";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EZ TODD by EZ Law | Attorney-Prepared Texas Deeds",
+  title: "EZ TODD by EZ Law | Texas Transfer on Death Deed",
   description:
     "EZ TODD by EZ Law offers flat-fee Texas Transfer on Death Deeds and Lady Bird Deeds prepared and reviewed by a licensed Texas attorney.",
   alternates: {
@@ -52,7 +52,7 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto mb-8 max-w-2xl text-center">
               <h2 id="choices-heading" className="text-3xl font-semibold tracking-normal sm:text-4xl">
-                Choose your deed path
+                Choose your Transfer on Death Deed path
               </h2>
               <p className="mt-4 text-base leading-7 text-white/55">
                 Start with the guidance page to determine which option is right for you.
@@ -74,7 +74,7 @@ export default function Home() {
                   Three simple steps
                 </p>
                 <h2 id="process-heading" className="mt-3 text-3xl font-semibold tracking-normal sm:text-4xl">
-                  From questions to recorded deed
+                  From questions to recorded Transfer on Death Deed
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-6 text-white/55">
@@ -120,7 +120,7 @@ export default function Home() {
 
         <CTASection
           id="final-cta"
-          title="Start your Texas deed today"
+          title="Start your Texas Transfer on Death Deed today"
           body="A simple TODD or Lady Bird deed is drafted and submitted for recording in 24 hours or less, guaranteed, excluding weekends and holidays."
           primaryLabel="Start Now"
           primaryHref="/start"
